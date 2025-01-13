@@ -1,0 +1,23 @@
+    <% /* include.sign.new */ %>
+      <%String memo = request.getParameter("signMemo");
+        if(memo==null) memo="";
+        String agree = request.getParameter("agree");
+        if(agree==null) agree="";
+        String signed_result = "reject";
+        if(agree.equals("1")) signed_result = "agree";
+        String decide = request.getParameter("decide");
+        if(decide==null) decide = "";
+      
+        Flow_detail fd = new Flow_detail();
+        fd.setFlowKey(flowKey);
+        fd.setMemo(memo);
+        fd.setSigner_id(userInfo.getAttribute("emp_id"));
+        fd.setSigner_name(userInfo.getAttribute("user_name"));
+        fd.setSigner_title(userInfo.getAttribute("jobName"));
+        fd.setSigner_department(userInfo.getAttribute("DeptName"));
+        fd.setSigned_result(signed_result);
+        fd.setDecided(decide);
+        fd.setSigned_time(Util.getDateTime());
+      
+        FlowEngin.run(fd);%>
+    <% /* include.sign.new */ %>

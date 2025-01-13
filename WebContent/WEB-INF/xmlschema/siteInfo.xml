@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Message>
+  <Language id="chinese">
+  	<!--系統是否用案件權限-->
+  	<site.case.privilege value="true"/>
+
+    <site.jsp.title value="企業全球資訊網站模擬展示系統"/>
+    
+    
+    <site.jsp.frameset.Logo.src value="siteLogo.jsp,60"/>
+ 
+    <site.jsp.frameset.TopMenu.src value="siteTopMenu.jsp,26"/>
+    <site.jsp.frameset.Main.src value="http://www.sis.com.tw/aboutsis/aboutsis_index00.htm,*"/>
+    <site.jsp.frameset.BottomMenu.src value="siteBottomMenu.jsp,26"/>
+    <site.jsp.frameset.CopyRight.src value="siteCopyRight.jsp"/>
+    <siteMain.jsp.leftFrame.src.default value=""/>
+    <siteMain.jsp.rightFrame.src.default value=""/>
+    
+    <siteLogo.jsp.logoImg value="img/logo.jpg"/>
+    <siteLogo.jsp.background value="bgcolor='#6E6E6E'"/>
+    <siteLogo.jsp.bgcolor value="bgcolor='#6E6E6E'"/>
+    <siteLogo.jsp.color value="#FFFFFF"/>
+ 
+    <siteLogo.jsp.font_family value="標楷體"/>
+  </Language>
+ 
+  
+  <Language id="english">
+    <site.jsp.title value="Taipei Church31"/>
+    
+    <site.jsp.frameset.Logo.src value="siteLogo.jsp,80"/>
+    <site.jsp.frameset.TopMenu.src value=""/>
+    <site.jsp.frameset.Main.src value=",*"/>
+    <site.jsp.frameset.BottomMenu.src value=""/>
+    <site.jsp.frameset.CopyRight.src value="copyright.jsp,56"/>
+
+  </Language>
+
+
+</Message>

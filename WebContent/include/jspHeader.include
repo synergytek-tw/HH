@@ -1,0 +1,14 @@
+<%/* ========== include/jspHeader.include ========== */%>
+<%@ page contentType="text/html;charset=utf-8" errorPage="" pageEncoding="utf-8" %>
+<%@ page import="java.util.*,java.io.File,java.lang.StringBuffer,deepspot.main.*,deepspot.util.*,deepspot.basic.*" %>
+<% request.setCharacterEncoding("utf-8"); %>
+<jsp:useBean id="userInfo" scope="session" class="deepspot.main.UserBean" />
+<% if(userInfo.getAttribute("user_id")==null || !userInfo.getIsLogin()) {%>
+     <script>
+       location.replace("error.jsp");
+     </script>    
+<% }%>
+<script event="oncontextmenu" for="document">
+  //event.returnValue = false;
+</script>
+<%/* ========== include/jspHeader.include ========== */%>

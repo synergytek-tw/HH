@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="Big5"?>
+
+<project name="cpbl">
+  
+  <flow id="flow01" name="經費支付申請單" closer="TellerHelper">
+    <step id="1" desc="請購單位驗收"
+                 signer_type="agent" field_name="SrcApplicant"
+                 checkSelf='no'/>
+    <step id="2" desc="事務主管簽核"
+                 signer_type="dept_manager"
+                 dept="dept41"/>  
+    <step id="3" desc="保管登記"
+                 signer_type="Sponsor" Sponsor_id="ExpendableSponsor"
+                 skip="yes"
+                 skipValue="(KeeperFlag!='Y' or KeepSponsor!='Y')"/>
+    <step id="4" desc="保管承辦"
+                 signer_type="Sponsor" Sponsor_id="Keeper"
+                 skip="yes"
+                 skipValue="(KeeperFlag!='Y')"/>
+    <step id="5" desc="資訊承辦審核"
+                 signer_type="agent" field_name="InfosSponsor"
+                 skip="yes" skipValue="InfosSponsor=''"/>
+    <step id="6" desc="會計審核"
+                 signer_type="agent" field_name="SubjectControler"
+                 checkSelf='no'/>
+    <step id="7" desc="會計主管簽核"
+                 signer_type="dept_manager"
+                 dept="dept23"/>
+    <step id="8" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 decideByValue="Amount between 0 and 10000"/>
+    <step id="9" desc="主任秘書簽核"
+                 signer_type="dept_manager"
+                 dept="dept21"
+                 decideByValue="Amount between 0 and 20000"/>
+    <step id="10" desc="副所長簽核"
+                 signer_type="dept_manager"
+                 dept="dept20"
+                 decideByValue="Amount between 0 and 50000"/>
+    <step id="11" desc="所長簽核"
+                 signer_type="dept_manager"
+                 dept="dept10"/>
+  </flow>
+  
+  <flow id="flow02" name="出差旅費報告單" closer="Teller">
+    <step id="1" desc="預算控管人審核"
+                 signer_type="agent" field_name="BudgetControler"
+                 checkSelf="no"/>
+    <step id="2" desc="單位主管審核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 skip="yes" skipValue="DeptSigner2=''"/>
+    <step id="3" desc="人事主辦審核"
+                 signer_type="agent" field_name="Sponsor"
+                 skip="yes" skipValue="Sponsor=''"/>
+    <step id="4" desc="農建基金審核"
+                 signer_type="agent" field_name="SubjectControler1"
+                 skip="yes" skipValue="SubjectControler1=''"
+                 checkSelf="no"/>
+    <step id="5" desc="會計審核"
+                 signer_type="agent" field_name="SubjectControler2"
+                 checkSelf="no"/>
+    <step id="6" desc="會計主管簽核"
+                 signer_type="dept_manager" dept="dept23"/>
+    <step id="7" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 decideByValue="Amount between 0 and 10000"
+                 checkSelf="no"/>
+    <step id="8" desc="主任秘書簽核"
+                 signer_type="dept_manager" dept="dept21"
+                 decideByValue="Amount between 0 and 30000"
+                 checkSelf="no"/>
+    <step id="9" desc="副所長簽核"
+                 signer_type="dept_manager" dept="dept20"
+                 decideByValue="Amount between 0 and 50000"
+                 checkSelf="no"/>
+    <step id="10" desc="所長簽核"
+                 signer_type="dept_manager" dept="dept10"
+                 checkSelf="no"/>
+  </flow>
+  
+  <flow id="flow03" name="零用金支付憑單" closer="Teller">
+    <step id="1" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner1"
+                 skip="yes" skipValue="DeptSigner1!=''"/>
+    <step id="2" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 skip="yes" skipValue="(DeptSigner2=DeptSigner1 or DeptSigner2!='')"/>
+    <step id="3" desc="會計審核"
+                 signer_type="Sponsor" Sponsor_id="AccountSponsor"
+                 checkSelf="no"/>
+    <step id="4" desc="會計主管簽核"
+                 signer_type="dept_manager" dept="A20"
+                 skip="yes" skipValue="DeptSigner1!=''"/>
+    <step id="5" desc="稽核"
+                 signer_type="dept_manager" dept="A10"
+                 skip="yes" skipValue="DeptSigner1!=''"/>
+    <step id="6" desc="秘書長簽核"
+                 signer_type="dept_manager" dept="A00"
+                 checkSelf="no"/>
+  </flow>
+  
+  <flow id="flow04" name="請購單" closer="Helper">
+    <step id="1" desc="預算控管人審核"
+                 signer_type="agent" field_name="BudgetControler"
+	  skip="yes" skipValue="BudgetControler=''"
+                 checkSelf="no"/>
+    <step id="2" desc="單位主管審核"
+                 signer_type="agent" field_name="DeptSigner1"/>
+    <step id="3" desc="採購助理協辦"
+                 signer_type="agent" field_name="Helper"
+                 checkSelf="no"/> 
+    <step id="4" desc="申請人規格覆核"
+                 signer_type="agent" field_name="Applicant"
+                 skip="yes" skipValue="CrossCheck!='Y'"
+                 checkSelf="no"/>
+    <step id="5" desc="經辦人審核"
+                 signer_type="agent" field_name="PurchaseMan"
+                 skip="yes" skipValue="PurchaseMan=''"/>
+    <step id="6" desc="資訊承辦審核"
+                 signer_type="agent" field_name="InfosSponsor"
+                 skip="yes" skipValue="InfosSponsor=''"/>
+    <step id="7" desc="事務股長簽核"
+                 signer_type="dept_manager" dept="dept41"/>
+    <step id="8" desc="農建基金審核"
+                 signer_type="agent" field_name="SubjectControler1"
+                 skip="yes" skipValue="SubjectControler1=''"
+                 checkSelf="no"/>
+    <step id="9" desc="會計審核"
+                 signer_type="agent" field_name="SubjectControler2"
+                 checkSelf="no"/>
+    <step id="10" desc="會計主管簽核"
+                 signer_type="dept_manager" dept="dept23"/>
+    <step id="11" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 decideByValue="Amount between 0 and 10000"
+                 checkSelf="no"/>
+    <step id="12" desc="主任秘書簽核"
+                 signer_type="dept_manager" dept="dept21"
+                 decideByValue="Amount between 0 and 30000"
+                 checkSelf="no"/>
+    <step id="13" desc="副所長簽核"
+                 signer_type="dept_manager" dept="dept20"
+                 decideByValue="Amount between 0 and 50000"
+                 checkSelf="no"/>
+    <step id="14" desc="所長簽核"
+                 signer_type="dept_manager" dept="dept10"
+                 checkSelf="no"/>
+  </flow>
+  
+  <flow id="flow05" name="臨時借款單" closer="AccountSponsor">
+    <step id="1" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner1"/>
+    <step id="2" desc="單位主管簽核"
+                 signer_type="agent" field_name="DeptSigner2"
+                 skip="yes" skipValue="DeptSigner2=DeptSigner1"/>
+    <step id="3" desc="主任秘書簽核"
+                 signer_type="dept_manager" dept="dept21"
+                 checkSelf="no"/>
+  </flow>
+  
+  <flow id="flow06" name="軟體保管單" closer="Keeper">
+    <step id="1" desc="請購人簽核"
+                 signer_type="agent" 
+                 field_name="SrcApplicant"/>
+    <step id="2" desc="保管簽核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="Keeper"/>
+    <step id="3" desc="資訊簽核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="InfoSponsor"/>
+  </flow>
+  
+  <flow id="flow07" name="消耗性物品收領單" closer="ExpendableSponsor">
+    <step id="1" desc="驗收人"
+                 signer_type="agent"
+                 field_name="SrcApplicant"/>
+    <step id="2" desc="會計查核"
+                 signer_type="agent"
+                 field_name="SubjectControler"/>
+    <step id="3" desc="會計主管簽核"
+                 signer_type="dept_manager"
+                 dept="dept23"/>
+    <step id="4" desc="收料人"
+                 signer_type="Sponsor"
+                 Sponsor_id="ExpendableSponsor"/>
+    <step id="5" desc="保管核決"
+                 signer_type="Sponsor"
+                 Sponsor_id="SoftwareSponsor"/>
+  </flow>  
+  
+  <flow id="flow08" name="公務汽車使用申請單" closer="CarManager">
+    <step id="1" desc="單位主管簽核"
+                 signer_type="dept_manager"
+                 dept="applicant"
+                 checkSelf="no"/>
+    <step id="2" desc="車輛管理員簽核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="CarManager"
+                 checkSelf="no"/>   
+    <step id="3" desc="車輛駕駛員簽核"
+                 signer_type="agent"
+                 field_name="Driver"
+                 skip="yes"
+                 skipValue="DriverBySelf='Y'"/>
+    <step id="4" desc="事務專員簽核"
+                 signer_type="dept_manager"
+                 dept="dept41"
+                 decide="yes"/>                  
+    <step id="5" desc="主任秘書簽核"
+                 signer_type="dept_manager"
+                 dept="dept21"
+                 decide="yes"/>
+    <step id="6" desc="副所長簽核"
+                 signer_type="dept_manager"
+                 dept="dept20"
+                 decide="yes"/>
+    <step id="7" desc="所長簽核"
+                 signer_type="dept_manager"
+                 dept="dept10"/>
+  </flow>          
+  
+  <flow id="flow10" name="財產增加單" closer="AssetSponsor">
+    <step id="1" desc="使用單位保管人"
+                 signer_type="agent" 
+                 field_name="Keeper"
+                 checkSelf="no"/>
+    <step id="2" desc="財產管理單位簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AssetSponsor"
+                 checkSelf="no"/>
+    <step id="3" desc="會計承辦簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AccountSponsor"
+                 checkSelf="no"/>
+    <step id="4" desc="會計主管簽核"
+                 signer_type="dept_manager" 
+                 dept="dept23"/>
+  </flow>
+  
+  <flow id="flow11" name="財產異動單" closer="AssetSponsor">
+    <step id="1" desc="移出單位保管人"
+                 signer_type="agent" 
+                 field_name="SrcKeeper"
+                 checkSelf="no"/>
+    <step id="2" desc="移入單位保管人"
+                 signer_type="agent" 
+                 field_name="NewKeeper"
+                 checkSelf="no"/>
+    <step id="3" desc="財產管理單位簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AssetSponsor"
+                 checkSelf="no"/>
+  </flow>
+  
+  <flow id="flow12" name="財產減損單" closer="AssetSponsor">
+    <step id="1" desc="使用單位保管人"
+                 signer_type="agent" 
+                 field_name="Keeper"
+                 checkSelf="no"/>
+    <step id="2" desc="財產管理單位簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AssetSponsor"
+                 checkSelf="no"/>
+    <step id="3" desc="會計承辦簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AccountSponsor"
+                 checkSelf="no"/>
+    <step id="4" desc="會計主管簽核"
+                 signer_type="dept_manager" 
+                 dept="dept23"/>
+  </flow>
+  
+  <flow id="flow13" name="折舊提列單" closer="AccountSponsor">
+    <step id="1" desc="會計承辦簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="AccountSponsor"
+                 checkSelf="no"/>
+    <step id="2" desc="會計主管簽核"
+                 signer_type="dept_manager" 
+                 dept="dept23"/>
+  </flow>
+
+<flow id="flow14" name="報損藥品報告單" closer="StockManager">
+    <step id="1" desc="經辦人簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="StockManager"/>
+    <step id="2" desc="保管覆核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="Keeper"/>
+    <step id="3" desc="主任秘書簽核"
+                 signer_type="dept_manager"
+                 dept="dept21"/>
+    <step id="4" desc="品管審核"
+                 signer_type="Sponsor"
+                 Sponsor_id="QualityControler"/>
+    <step id="5" desc="製劑主管簽核"
+                 signer_type="dept_manager"
+                 dept="dept27"/>
+    <step id="6" desc="會計主管簽核"
+                 signer_type="dept_manager"
+                 dept="dept23"/>
+    <step id="7" desc="所長簽核"
+                 signer_type="dept_manager"
+                 dept="dept10"/>
+ </flow>
+
+<flow id="flow15" name="成品入庫單" closer="StockManager">
+    <step id="1" desc="品管審核"
+                 signer_type="Sponsor"
+                 Sponsor_id="QualityControler"/>
+    <step id="2" desc="製劑主管審核"
+                 signer_type="dept_manager"
+                 dept="dept27"/>
+    <step id="3" desc="倉儲審核"
+                 signer_type="Sponsor"
+                 Sponsor_id="StockManager"/>
+    <step id="4" desc="保管覆核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="Keeper"/>
+    <step id="5" desc="主任秘書簽核"
+                 signer_type="dept_manager"
+                 dept="dept21"/>
+ </flow>
+
+ <flow id="flow16" name="生物藥品提貨單" closer="StockManager">
+    <step id="1" desc="經辦人簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="StockManager"/>
+    <step id="2" desc="保管覆核"
+                 signer_type="Sponsor" 
+                 Sponsor_id="Keeper"/> 
+    <step id="3" desc="主任秘書簽核"
+                 signer_type="dept_manager"
+                 dept="dept21"/>
+  </flow>  
+
+  <flow id="flow31" name="問題反映單" closer="Administrator">
+    <step id="1" desc="系統管理者簽核"
+                 signer_type="Sponsor"
+                 Sponsor_id="Administrator"
+                 checkSelf="no"/>
+  </flow>
+      
+</project>

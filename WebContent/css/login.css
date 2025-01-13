@@ -1,0 +1,118 @@
+body {
+  color: #330033;
+  background-color: white;
+  font: 12px verdana, arial, helvetica;
+}
+a {
+  text-decoration: none;
+  color: #663366;
+}
+a:hover {
+  color: #663366;
+}
+
+table.logo {
+  width: 100%;
+  height: 60px;
+  color:#FFFFFF;
+}
+table.copyright {
+  width: 100%;
+  height: 40px;
+  color:#FFFFFF;
+}
+table.login {
+  text-align: center;
+  border: black 1px inset;
+  font: 12px verdana, arial, helvetica;
+  margin: 1cm 0cm 0cm 0cm;
+}
+td.logField {
+  padding: 0cm 0.5cm 0cm 0.5cm;
+}
+div.logTitle {
+  font: bold 12pt verdana, arial, helvetica;
+}
+img.login {
+  border: medium double black;
+}
+
+table.input {
+  border: black 1px inset;
+  font: 14px verdana, arial, helvetica;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 580px;
+}
+
+table.view {
+  border: black 1px inset;
+  font: 14px verdana, arial, helvetica;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 500px;
+}
+
+table.input2 {
+  border: black 1px inset;
+  font: 14px verdana, arial, helvetica;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 480px;
+}
+
+table.menu {
+  border: black 1px inset;
+  font: bold 16px verdana, arial, helvetica;
+  background-color: #FFFFCC;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 420px;
+  text-align: center;
+}
+
+table.list {
+  border: black 1px inset;
+  font: 13px verdana, arial, helvetica;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 580px;
+
+}
+
+table.userslist {
+  border: black 1px inset;
+  font: 13px verdana, arial, helvetica;
+  margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+  width: 580px;
+
+}
+
+td.bookNumber {
+  color: white;
+  background-color: #663366;
+  padding: 0.2cm 0cm 0.2cm 0cm;
+  text-align: center;
+  width: 50px;
+}
+
+td.menu {
+  color: white;
+  background-color: #663366;
+  padding: 0.2cm 0cm 0.2cm 0cm;
+  text-align: center;
+}
+
+tr.chapter td {
+  background-color: #EDEACC;
+  padding: 0.2cm 0.2cm 0.2cm 0.2cm;
+}
+
+div.booksWelcome {
+  color: #993399;
+  font: bold 24px verdana, arial, helvetica;
+  margin: 1cm 1cm 0cm 1cm;
+}
+
+div.menu {
+  color: white;
+  font: bold 20px verdana, arial, helvetica;
+  background-color: #EDEACC;
+  padding: 0.2cm 0cm 0.2cm 0cm;
+  text-align: center;
+}

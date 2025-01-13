@@ -1,0 +1,48 @@
+<%/* =========== signForm1.include =========== */%>
+<%if(showSignForm) {%>
+  <input type="hidden" id="signForm" name="signForm" value="true"/>
+  <table>
+    <%Flow f = new Flow(thisObj.getFlowKey());
+      if(!f.getSigner_id().equals(f.getSrcSigner_id())){%>
+        <tr>
+          <td align="center" colspan="2">
+            <input type="button" id="btn" name="btn" onClick="location.replace('sendBack.jsp?flowKey=<%=thisObj.getFlowKey()%>');)"
+                   value="<%=userInfo.getMsg("jsp.Flow_detail.backToSrcSigner")%>"/>
+          </td>
+        </tr>
+        <tr><td><br></td></tr> 
+    <%}%>
+    <tr>
+      <td align="center" colspan="2">
+        <B><font size="3"><%=userInfo.getMsg("jsp.signForm.title")%></font></B>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>
+        <%=userInfo.getMsg("jsp.signForm.memo")%>
+      </td>
+      <td>
+        <textarea id="signMemo" name="signMemo" rows="4" cols="50" 
+                  title="<%=userInfo.getMsg("jsp.Flow.DblClick")%>"
+                  onDblClick="openPhrase('signMemo')"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input type="radio" id="agree" name="agree" value="1" checked/>
+        <%=userInfo.getMsg("jsp.signForm.agree")%>
+        <input type="radio" id="agree" name="agree" value="0"/>
+        <%=userInfo.getMsg("jsp.signForm.reject")%>
+        <%boolean decideFlag = FlowEngin.getDecideFlag(flowKey);
+          if(decideFlag) {%> 
+            <input type="checkBox" id="decide" name="decide" value="1"/>
+            <%=userInfo.getMsg("jsp.signForm.decide")%>
+        <%}%>    
+        <input type="button" id="submitBtn" name="submitBtn" onClick="setSubmitValue()"
+               value="<%=userInfo.getMsg("jsp.signForm.approve")%>"/>
+      </td>
+    </tr>
+  </table>  
+<%}%>
+<%/* =========== signForm1.include =========== */%>

@@ -1,0 +1,127 @@
+<% /* include.function.new */ %>
+<input type="hidden" id="submitValue" name="submitValue" value=""/>
+<input type="hidden" id="setObjValue" name="setObjValue" value=""/>
+<input type="hidden" id="getObjValue" name="getObjValue" value=""/>
+<input type="hidden" id="clearValue" name="clearValue" value=""/>
+<input type="hidden" id="serchFlag" name="serchFlag" value=""/>
+<input type="hidden" id="doSerchFlag" name="doSerchFlag" value=""/>
+<input type="hidden" id="creater" name="creater" value="<%=userInfo.getAttribute("emp_id")%>" />
+<input type="hidden" id="program_id" name="program_id" value="<%=program_id%>" />
+<%boolean serch = false;
+  String serchFlag = request.getParameter("serchFlag");
+  if(serchFlag==null){
+    serch = true;
+  } else {
+    if(serchFlag.equals("true")){
+      serch = true;
+    } else {
+      serch = false;
+    }
+  }
+  boolean doSerch = false;
+  String doSerchFlag = request.getParameter("doSerchFlag");
+  if(doSerchFlag==null){
+    doSerch = false;
+  } else {
+    if(doSerchFlag.equals("true")){
+      doSerch = true;
+      serch = true;
+    } else {
+      doSerch = false;
+    }
+  }%>
+<tr>
+  <td width="50%" colspan="2">
+    <div class="logTitle">
+      <%if(serch){%>
+        <%=serchTitle%>
+      <%} else {%>
+        <%=title%>
+      <%}%>
+      <img src="img/Print-Active.gif" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.print")%>" 
+           onClick="printHTML(800,700,'PrintScope')"/>
+      <%String help = userInfo.getOnlineHelp(program_id);
+        if(help.trim().length()>0){%>
+          <img src="img/help.jpg" title="<%=userInfo.getMsg("jsp.common.help")%>" style="cursor: hand" onClick="openHelp('<%=help%>')"/>
+      <%}
+        if(!pdfFile.equals("")){%>
+          <input type="button" style="cursor: hand" onClick="printPdf('<%=pdfFile%>')"
+                 value="<%=userInfo.getMsg("jsp.StockQuery.PrintPdf")%>">
+      <%}%>
+      <img src="img/back.png" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.back")%>" 
+           border=1 onClick="window.history.back()"/>
+      <img src="img/forward.png" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.forward")%>" 
+           border=1 onClick="window.history.forward()"/>
+      <%if(serch){%>
+        <img src="img/image013.png" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.operateMode")%>" 
+             border=1 onClick="setValue()"/>
+      <%}else{%>
+        <img src="img/search02.gif" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.serchMode")%>" 
+             border=1 onClick="document.input.serchFlag.value='true';setValue()"/>
+      <%}%>
+    </div>
+  </td>     
+  <td colspan="2" align="right">
+  <%if(showSubmit && !serch){%>
+    <%if(dbAction.equals("insert")){%>
+        <input type="button" style="cursor: hand" onClick="ClearValue()"
+               value="<%=userInfo.getMsg("jsp.common.clear")%>"/>
+    <%}
+      if(canSubmit){%>
+        <input type="button" style="cursor: hand" onClick="setSubmitValue('<%=dbAction%>')"
+               value="<%=userInfo.getMsg("jsp.common.submit")%>"/> 
+    <%}
+    }
+    if(serch){%>
+        <input type="button" style="cursor: hand" onClick="document.input.serchFlag.value='true';ClearValue()"
+               value="<%=userInfo.getMsg("jsp.common.clear")%>"/>
+  <%}
+    if(!serch){%>
+    <select id="formType" name="formType" onChange="setValue()">
+    <%if(showSignForm) {%>
+         <option value="sign" selected>
+           <%=userInfo.getMsg("jsp.function.sign")%>
+         </option>
+    <%} else if(showCloseForm) {%>
+         <option value="close" selected>
+           <%=userInfo.getMsg("jsp.closeForm.close")%>
+         </option>
+    <%} else if(Ending.equals("true")){%>
+         <option value="Ending" selected>
+           <%=userInfo.getMsg("jsp.closeForm.Ending")%>
+         </option>
+    <%} else {%>
+      <%if(alowQuery){%>
+	       <option value="query"<%if(dbAction.equals("query")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.query")%>
+	       </option>
+	    <%}
+        if(alowUpdate){%>
+         <option value="update"<%if(dbAction.equals("update")){%> selected<%}%>>
+           <%=userInfo.getMsg("jsp.function.update")%>          
+         </option>
+      <%} 
+        if(alowInsert){%>
+         <option value="insert"<%if(dbAction.equals("insert")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.insert")%>
+	       </option>
+      <%}
+        if(alowDelete){%>
+	       <option value="delete"<%if(dbAction.equals("delete")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.delete")%>
+	       </option>
+      <%}
+        if(alowPrint){%>
+	       <option value="print"<%if(dbAction.equals("print")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.print")%>
+	       </option>
+      <%}
+      }%>
+    </select>
+	<%} else {%>
+	    <img src="img/C_Find_Sm_N.jpg" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.doSerch")%>" 
+           border=1 onClick="document.input.doSerchFlag.value='true';setValue()"/>
+	<%}%>
+  </td>
+</tr>
+<% /* include.function.new */ %>

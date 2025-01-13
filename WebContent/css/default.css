@@ -1,0 +1,84 @@
+<!-- The following styles are basic, do not modify {} -->
+<!-- Standard {} -->
+td,
+body         {font-family:Arial,Verdana,Helvetica;font-size: 9pt;}
+a            {text-decoration:none}
+a:hover      {text-decoration:underline}
+h1           {font-weight:bold;font-size:21pt;display:inline}
+h2           {font-weight:bold;font-size:17pt;display:inline}
+h3           {font-weight:bold;font-size:15pt;display:inline}
+h4           {font-weight:bold;font-size:11pt;display:inline}
+form         {display:inline}
+input,
+select,
+textarea     {font-family:Arial,Verdana,Helvetica;font-size: 9pt}
+ul           {font-family:Arial,Verdana,Helvetica;font-size: 9pt;margin-bottom:0}
+pre          {font-family:"Courier New";font-size: 9pt}
+ilayer 	     {display:block}
+<!-- Class {} -->
+.il          {display:inline}
+.w100        {position:relative;width:100%}
+.wh100       {position:relative;width:100%;height:100%}
+.hide        {display:none}
+<!-- taglib: box, grid {} -->
+.box         {background-color:#000000}
+<!-- taglib: hr {} -->
+.hr          {border-color:#000000}
+<!-- Id {} -->
+#bold        {font-weight:bold}
+#fixed       {font-family:"Courier New"}
+<!-- taglib: hr {} -->
+#hr          {border-top:0;border-left:0;border-right:0;border-bottom-style:solid;width:100%}
+#dash        {border-top:0;border-left:0;border-right:0;border-bottom-style:dashed;width:100%}
+
+<!-- taglib: menu {} -->
+.menu  {position:absolute;visibility:hidden}
+.mi    {font-family:Arial,Verdana,Helvetica;font-size:9pt;color:#000000;background-color:#FFFFFF}
+.mihl  {font-family:Arial,Verdana,Helvetica;font-size:9pt;color:#FFFFFF;background-color:#333333}
+.mn4b  {font-size:2px}
+.mn4p  {padding:4}
+
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+#sortable li span { position: absolute; margin-left: -1.3em; }
+.ui-state-default2 { border: 1px solid #d3d3d3; background: #e6e6e6 url(../images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; text-align: left; }
+
+
+ui-autocomplete {
+  	width: 400px;
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }
+  
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+    /* support: IE7 */
+    *height: 1.7em;
+    *top: 0.1em;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 0.3em;
+    width: 600px;
+  }
+  
+  
+.ui-autocomplete-loading {
+    background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
+}

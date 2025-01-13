@@ -1,0 +1,93 @@
+<% /* include.function.new */ %>
+<input type="hidden" id="submitValue" name="submitValue" value=""/>
+<input type="hidden" id="setObjValue" name="setObjValue" value=""/>
+<input type="hidden" id="getObjValue" name="getObjValue" value=""/>
+<input type="hidden" id="clearValue" name="clearValue" value=""/>
+<input type="hidden" id="creater" name="creater" value="<%=userInfo.getAttribute("emp_id")%>" />
+<input type="hidden" id="program_id" name="program_id" value="<%=program_id%>" />
+<tr>
+  <td width="50%" colspan="2">
+    <div class="logTitle">
+      <%=title%>
+      <img src="img/Print-Active.gif" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.print")%>" 
+           onClick="printHTML(800,700,'PrintScope')"/>
+      <%String help = userInfo.getOnlineHelp(program_id);
+        if(help.trim().length()>0){%>
+          <img src="img/help.jpg" title="<%=userInfo.getMsg("jsp.common.help")%>" style="cursor: hand" onClick="openHelp('<%=help%>')"/>
+      <%}
+        if(!pdfFile.equals("")){%>
+          <input type="button" style="cursor: hand" onClick="printPdf('<%=pdfFile%>')"
+                 value="<%=userInfo.getMsg("jsp.StockQuery.PrintPdf")%>">
+      <%}%>
+      <img src="img/back.png" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.back")%>" 
+           border=1 onClick="window.history.back()"/>
+      <img src="img/forward.png" style="cursor: hand" title="<%=userInfo.getMsg("jsp.common.forward")%>" 
+           border=1 onClick="window.history.forward()"/>
+    </div>
+  </td>     
+  <td colspan="2" align="right">
+  <%if(showSubmit){%>
+    <%if(dbAction.equals("insert")){%>
+        <input type="button" style="cursor: hand" onClick="ClearValue()"
+               value="<%=userInfo.getMsg("jsp.common.clear")%>"/>
+    <%
+    }
+    if(dbAction.equals("insert") || dbAction.equals("update")) {
+    %>
+        <input type="button" style="cursor: hand" onClick="setSubmitValue('<%=dbAction%>')"
+               value="<%=userInfo.getMsg("jsp.common.submit2")%>"/>
+    <%
+    }
+    else {
+    %>
+    <input type="button" style="cursor: hand" onClick="setSubmitValue('<%=dbAction%>')"
+               value="<%=userInfo.getMsg("jsp.common.submit")%>"/>
+    <%
+    }
+    %>
+    
+  <%}%>
+    <select id="formType" name="formType" onChange="setValue()">
+    <%if(showSignForm) {%>
+         <option value="sign" selected>
+           <%=userInfo.getMsg("jsp.function.sign")%>
+         </option>
+    <%} else if(showCloseForm) {%>
+         <option value="close" selected>
+           <%=userInfo.getMsg("jsp.closeForm.close")%>
+         </option>
+    <%} else if(Ending.equals("true")){%>
+         <option value="Ending" selected>
+           <%=userInfo.getMsg("jsp.closeForm.Ending")%>
+         </option>
+    <%} else {%>
+      <%if(alowQuery){%>
+	       <option value="query"<%if(dbAction.equals("query")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.query")%>
+	       </option>
+	    <%}
+        if(alowUpdate){%>
+         <option value="update"<%if(dbAction.equals("update")){%> selected<%}%>>
+           <%=userInfo.getMsg("jsp.function.update")%>          
+         </option>
+      <%} 
+        if(alowInsert){%>
+         <option value="insert"<%if(dbAction.equals("insert")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.insert")%>
+	       </option>
+      <%}
+        if(alowDelete){%>
+	       <option value="delete"<%if(dbAction.equals("delete")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.delete")%>
+	       </option>
+      <%}
+        if(alowPrint){%>
+	       <option value="print"<%if(dbAction.equals("print")){%> selected<%}%>>
+	         <%=userInfo.getMsg("jsp.function.print")%>
+	       </option>
+      <%}
+      }%>
+    </select>
+  </td>
+</tr>
+<% /* include.function.new */ %>

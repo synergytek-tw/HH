@@ -1,0 +1,68 @@
+  <% /* include.function.new1 */ %>
+  <input type="hidden" id="submitValue" name="submitValue" value=""/>
+  <input type="hidden" id="setObjValue" name="setObjValue" value=""/>
+  <input type="hidden" id="getObjValue" name="getObjValue" value=""/>
+  <input type="hidden" id="clearValue" name="clearValue" value=""/>
+  <input type="hidden" id="deleteDetailValue" name="deleteDetailValue" value=""/>
+  <input type="hidden" id="currentStep" name="currentStep" value="<%=currentStep%>"/>
+  <input type="hidden" id="creater" name="creater" value="<%=emp_id%>" />
+  <input type="hidden" id="program_id" name="program_id" value="<%=program_id%>" />
+	
+  <tr>
+    <td colspan="<%=colspan-1%>">
+      <select id="dbAction" name="dbAction" onChange="setValue()">
+    <%if(showSignForm) {%>
+        <option value="sign" selected>
+          <%=userInfo.getMsg("jsp.function.sign")%>
+        </option>
+    <%} else if(showCloseForm) {%>
+        <option value="close" selected>
+          <%=userInfo.getMsg("jsp.closeForm.close")%>
+        </option>
+    <%} else if(Ending.equals("true")){%>
+        <option value="Ending" selected>
+          <%=userInfo.getMsg("jsp.closeForm.Ending")%>
+        </option>
+    <%} else {%>
+      <%if(alowQuery){%>
+	  <option value="query"<%if(dbAction.equals("query")){%> selected<%}%>>
+	    <%=userInfo.getMsg("jsp.function.query")%>
+	  </option>
+	<%}
+        if(alowUpdate){%>
+        <option value="update"<%if(dbAction.equals("update")){%> selected<%}%>>
+          <%=userInfo.getMsg("jsp.function.update")%>          
+        </option>
+      <%} 
+        if(alowInsert){%>
+	  <option value="insert"<%if(dbAction.equals("insert")){%> selected<%}%>>
+	    <%=userInfo.getMsg("jsp.function.insert")%>
+	  </option>
+      <%}
+        if(alowDelete){%>
+	  <option value="delete"<%if(dbAction.equals("delete")){%> selected<%}%>>
+	    <%=userInfo.getMsg("jsp.function.delete")%>
+	  </option>
+      <%}
+        if(alowPrint){%>
+	  <option value="print"<%if(dbAction.equals("print")){%> selected<%}%>>
+	    <%=userInfo.getMsg("jsp.function.print")%>
+	  </option>
+      <%}%>
+    <%}%>
+	</select>
+    </td>
+    <td align="right">
+    <%String help = userInfo.getOnlineHelp(program_id);
+      if(help.trim().length()>0){%>
+        <input type="button" value="Help" onClick="openHelp('<%=help%>')"/>
+    <%}%>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="<%=colspan%>" class="logField">
+      <div class="logTitle"><%=title%></div>
+    </td>     
+  </tr>
+  <tr><td><br></td></tr>
+  <% /* include.function.new1 */ %>

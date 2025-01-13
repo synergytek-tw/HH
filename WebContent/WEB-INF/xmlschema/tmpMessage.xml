@@ -1,0 +1,8 @@
+    <jsp.CasePrivilege.title value="CasePrivilege"/>
+    <jsp.CasePrivilege.FlowKey value="FlowKey"/>
+    <jsp.CasePrivilege.EmployeeId value="Year"/>
+    <jsp.CasePrivilege.Names value="Client"/>
+    <jsp.CasePrivilege.Title value="ClientName"/>
+    <jsp.CasePrivilege.DeptId value="OriginalTitle"/>
+    <jsp.CasePrivilege.DeptName value="Status"/>
+    <jsp.CasePrivilege.Privilege value="InCharge"/>

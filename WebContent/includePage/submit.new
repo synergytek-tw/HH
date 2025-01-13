@@ -1,0 +1,21 @@
+<%if(!pdfFile.equals("")){%>
+  <tr>
+    <td align="center" colspan="<%=colspan%>">
+      <input type="button" value="<%=userInfo.getMsg("jsp.StockQuery.PrintPdf")%>" 
+             onClick="printPdf('<%=pdfFile%>')">
+    </td>
+  </tr>
+<%} else {
+    if(showSubmit){%>
+    <tr>
+      <td align="center" colspan="<%=colspan%>">
+        <input type="button" name="bt1" onClick="setSubmitValue('<%=dbAction%>')"
+               value="<%=userInfo.getMsg("jsp.common.submit")%>"/>
+    <%if(dbAction.equals("insert")){%>
+        <input type="button" name="bt2" onClick="ClearValue()"
+               value="<%=userInfo.getMsg("jsp.common.clear")%>"/>
+    <%}%>
+    </td>
+  </tr> 
+  <%}
+  }%>

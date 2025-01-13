@@ -1,0 +1,196 @@
+<project>
+
+  <java name="ExportCvsRecord" package="deepspot.main" createType="master">
+    <table>
+      <master title="pageRecord" prptNameField="AccountName">
+        <field name="FlowKey" key="primary key"
+               dbType="varchar(50)" 
+               jspMsgValue="FlowKey"
+        />
+        <field name="CreateDept" 
+               dbType="varchar(50)"
+        />
+        <field name="Applicant" 
+               dbType="varchar(50)"
+        />
+        <field name="ExportSql" 
+               dbType="varchar(1000)"
+        />
+       <field name="ExportDateTime"
+               dbType="varchar(20)"
+               jspMsgValue="Year"
+        />
+       <field name="ExportProgram"
+               dbType="varchar(50)"
+               jspMsgValue="Client"
+        />
+       <field name="ExportFile"
+               dbType="varchar(100)"
+               jspMsgValue="ClientName"
+        />
+      </master>
+      <detail>
+      </detail>
+    </table>
+  </java>
+
+  <java name="ToDos" package="deepspot.main" createType="master">
+    <table>
+      <master title="ToDos" prptNameField="TaskDescription">
+        <field name="FlowKey" key="primary key"
+               dbType="varchar(50)" 
+               jspMsgValue="FlowKey"
+        />
+        <field name="CreateDept" 
+               dbType="varchar(50)"
+        />
+        <field name="Applicant" 
+               dbType="varchar(50)"
+        />
+       <field name="TaskDescription" 
+               dbType="nvarchar(200)"
+	jspMsgValue="TaskDescription"
+        />
+       <field name="Matter"
+               dbType="varchar(50)"
+               jspMsgValue="Matter"
+        />
+       <field name="SrcModule"
+               dbType="varchar(50)"
+               jspMsgValue="SrcModule"
+        />
+       <field name="ParentId"
+               dbType="varchar(50)"
+               jspMsgValue="ParentId"
+        />
+       <field name="TaskCreator"
+               dbType="varchar(50)"
+               jspMsgValue="TaskCreator"
+        />
+       <field name="TaskSponsor"
+               dbType="varchar(50)"
+               jspMsgValue="CaseSponsor"
+        />
+        <field name="AssignedTo"
+               dbType="varchar(50)"
+               jspMsgValue="AssignedTo"
+        />
+       <field name="Attorney"
+               dbType="varchar(50)"
+               jspMsgValue="Attorney"
+        />
+       <field name="InterestedParty"
+               dbType="varchar(200)"
+               jspMsgValue="InterestedParty"
+        />
+       <field name="LegalDueDate"
+               dbType="varchar(10)"
+               jspMsgValue="LegalDueDate"
+        />
+       <field name="AttorneyDueDate"
+               dbType="varchar(10)"
+               jspMsgValue="AttorneyDueDate"
+        />
+       <field name="InternalDueDate"
+               dbType="varchar(10)"
+               jspMsgValue="InternalDueDate"
+        />
+       <field name="Alert"
+               dbType="char(1)"
+               jspMsgValue="Alert"
+        />
+       <field name="AlertDate"
+               dbType="varchar(10)"
+               jspMsgValue="AlertDate"
+        />
+       <field name="AlertBeforeDays"
+               dbType="int"
+               jspMsgValue="MSN"
+        />
+       <field name="Finished"
+               dbType="char(1)"
+               jspMsgValue="Finished"
+        />
+       <field name="FinishedDate"
+               dbType="varchar(10)"
+               jspMsgValue="FinishedDate"
+        />
+       <field name="Points"
+               dbType="int"
+               jspMsgValue="Points"
+        />
+        <field name="WorkingHours"
+               dbType="int"
+               jspMsgValue="WorkingHours"
+        />
+        <field name="Grade"
+               dbType="varchar(50)"
+               jspMsgValue="Grade"
+        />
+        <field name="Currency"
+               dbType="varchar(50)"
+               jspMsgValue="Currency"
+        />
+        <field name="PtoFee"
+               dbType="int"
+               jspMsgValue="PtoFee"
+        />
+        <field name="ServiceFee"
+               dbType="int"
+               jspMsgValue="ServiceFee"
+        />
+        <field name="AttorneyFee"
+               dbType="int"
+               jspMsgValue="AttorneyFee"
+        />
+        <field name="OtherFee"
+               dbType="int"
+               jspMsgValue="OtherFee"
+        />
+        <field name="Memo"
+               dbType="nvarchar(200)"
+               jspMsgValue="Memo"
+        />
+        <field name="Appendix"
+               dbType="varchar(100)"
+               jspMsgValue="Appendix"
+        />
+      </master>
+      <detail>
+      </detail>
+    </table>
+  </java>
+
+<java name="ReportDefine" package="deepspot.main" createType="master">
+    <table>
+      <master title="ReportSample" prptNameField="Names">
+        <field name="FlowKey" key="primary key"
+               dbType="varchar(50)" 
+               jspMsgValue="FlowKey"
+        />
+        <field name="CreateDept" 
+               dbType="varchar(50)"
+        />
+        <field name="Applicant" 
+               dbType="varchar(50)"
+        />
+       <field name="Names" 
+               dbType="nvarchar(200)"
+	jspMsgValue="Names"
+        />
+       <field name="SampleDocument"
+               dbType="varchar(50)"
+               jspMsgValue="SampleDocument"
+        />
+       <field name="ReportProgramId"
+               dbType="varchar(50)"
+               jspMsgValue="ReportProgramId"
+        />
+      </master>
+      <detail>
+      </detail>
+    </table>
+  </java>
+
+  
+</project>

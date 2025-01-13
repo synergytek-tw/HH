@@ -1,0 +1,36 @@
+<%/* ========== include/propertiesAccess.include ========== */%> 
+<%
+/* ========== actionMode prorerty access ========== */
+  String actionMode = null;
+  if(request.getMethod().equals("GET")){
+    actionMode = request.getParameter("_actionMode");
+  }
+  if(actionMode==null){
+    actionMode=thisObj.getActionMode();
+  }
+  thisObj.setActionMode(actionMode);
+  
+  String firstFlag = null;
+  if(request.getMethod().equals("GET")){
+    firstFlag = request.getParameter("_firstFlag");
+  }
+  if(firstFlag==null){
+    firstFlag=thisObj.getFirstFlag();
+  }
+  thisObj.setFirstFlag(firstFlag);
+  
+  String recordIndex = null;
+  if(request.getMethod().equals("GET")){
+    recordIndex = request.getParameter("_recordIndex");
+  }
+  if(recordIndex==null){
+    recordIndex=thisObj.getRecordIndex()+"";
+  }
+  thisObj.setRecordIndex(Integer.parseInt(recordIndex));
+  
+  thisObj.doAction(userInfo);
+%>
+<%=thisObj.printErrorMessage()%>
+<%=thisObj.printHtml()%>
+
+<%/* ========== include/propertiesAccess.include ========== */%>

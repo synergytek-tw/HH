@@ -1,0 +1,132 @@
+<% /* include.getFlags.frameset */ %>
+<%String tr1 = " bgcolor='#F7F7F7'";
+  String tr2 = " bgcolor='#F8F9DB''";
+  String bgcolor = "";
+  String table_bgcolor="border='0' cellpadding='1' cellspacing='1' bgcolor='#D7D7D7' width='98%'";
+  String th_bgcolor="bgcolor='#CDEFD0' height='25' style='font-size: 16;'";
+  
+  userInfo.setAttribute("requestUrl",request.getRequestURI());
+  
+  String emp_id=userInfo.getAttribute("emp_id");
+  
+  String language = userInfo.getAttribute("language");
+  
+  String flowKey = request.getParameter("flowKey");
+  if(flowKey==null) flowKey = "";
+  
+  String forwardPage = "";
+  
+  String pdfFile = "";
+  
+  String disabled = "";
+  String readonly = "readonly=\"true\" style=\"color:black\"";
+  
+  String final_result="";
+  
+  String submitValue = request.getParameter("submitValue");
+  if(submitValue==null) submitValue = "";
+  boolean submit = false;
+  if(submitValue.equals("true")) submit=true;
+  
+  String setObjValue = request.getParameter("setObjValue");
+  if(setObjValue==null) setObjValue = "";
+  boolean setObj = false;
+  if(setObjValue.equals("true")) setObj=true;
+  
+  String getObjValue = request.getParameter("getObjValue");
+  if(getObjValue==null) getObjValue = "";
+  boolean getObj = false;
+  if(getObjValue.equals("true")) getObj=true;
+  
+  String clearValue = request.getParameter("clearValue");
+  if(clearValue==null) clearValue = "";
+  boolean clearObj = false;
+  if(clearValue.equals("true")) clearObj=true;
+  
+  String Ending = request.getParameter("Ending");
+  if(Ending==null) Ending = "";
+  
+  String deleteDetailValue = request.getParameter("deleteDetailValue");
+  if(deleteDetailValue==null) deleteDetailValue = "";
+  boolean deleteDetail = false;
+  if(deleteDetailValue.equals("true")) deleteDetail = true;
+  
+  boolean useJavaBean = false;
+  if(submit || setObj || getObj) useJavaBean = true;
+  if(userInfo.getAttribute("user_id")==null || !userInfo.getIsLogin()) useJavaBean = false;
+  
+  boolean showSignForm = false;
+  String signForm = request.getParameter("signForm");
+  if(signForm==null) signForm = "";
+  if(signForm.equals("true")) showSignForm = true;
+
+  boolean showCloseForm = false;
+  String closeForm = request.getParameter("closeForm");
+  if(closeForm==null) closeForm = "";
+  if(closeForm.equals("true")) showCloseForm = true;
+  
+  boolean showFlow = false;
+  String flowForm = request.getParameter("showFlow");
+  if(flowForm==null) flowForm = "";
+  if(flowForm.equals("true")) showFlow = true;
+  
+  userInfo.getFlags(program_id);
+  boolean alowQuery = userInfo.getAllowQuery();
+  boolean alowInsert = userInfo.getAllowInsert();
+  boolean alowUpdate = userInfo.getAllowUpdate();
+  boolean alowDelete = userInfo.getAllowDelete();
+  boolean alowPrint = userInfo.getAllowPrint();
+   
+  if(Ending.equals("true")) {
+    alowInsert = false;
+    alowUpdate = false;
+    alowDelete = false;
+    alowPrint = false;
+    dbAction = "Ending";
+  }
+  
+  if(showSignForm) {
+    alowInsert = false;
+    alowUpdate = false;
+    alowDelete = false;
+    alowPrint = false;
+    dbAction = "sign";
+  }
+  
+  if(showCloseForm) {
+    alowInsert = false;
+    alowUpdate = false;
+    alowDelete = false;
+    alowPrint = false;
+    dbAction = "close";
+  }
+  
+  boolean canEdit = true;
+  if(dbAction.equals("query") || dbAction.equals("delete")
+                              || dbAction.equals("print")
+                              || dbAction.equals("sign")
+                              || dbAction.equals("close")){
+    disabled = readonly;
+    canEdit = false;
+  }
+  
+  boolean canSelect = false;
+  if(dbAction.equals("query") || dbAction.equals("update")
+                              || dbAction.equals("delete")
+                              || dbAction.equals("print")){
+    canSelect = true;
+  }
+  
+  boolean showSubmit = false;
+  if(dbAction.equals("insert") || dbAction.equals("update")
+                               || dbAction.equals("delete")
+                               || dbAction.equals("print")){
+    showSubmit = true;
+  }
+  
+  boolean dbExcute = false;
+  if(dbAction.equals("insert") || dbAction.equals("update")
+                               || dbAction.equals("delete")){
+    dbExcute = true;
+  }%>
+<% /* include.getFlags.frameset */ %>

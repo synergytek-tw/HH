@@ -1,0 +1,817 @@
+﻿<%@ page import="java.util.*,deepspot.main.*,deepspot.util.*" %> 
+<%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" %>
+<%String obj_id = request.getParameter("obj_id");  
+  String OnChangeFunction = request.getParameter("OnChangeFunction");
+  boolean showOtherButton = true;
+  if(obj_id==null||obj_id.equals("")) {
+    obj_id = "date_from";
+    showOtherButton = false;
+  }
+  String time = request.getParameter("time");
+  boolean showTime = false;
+  if(time!=null && time.equals("true"))
+    showTime=true;
+  String defaultHour = request.getParameter("hour");%>
+<HTML><HEAD><TITLE>萬年曆</TITLE>
+<META 
+content="農曆; 陽曆; 月曆; 節日; 時區; 節氣; 八字; 干支; 生肖; gregorian solar; chinese lunar; calendar;" 
+name=keywords>
+<META content=All name=robots>
+<META content="gregorian solar calendar and chinese lunar calendar" name=description>
+<SCRIPT language=JavaScript>
+<!--
+/*****************************************************************************
+                                   日期資料
+*****************************************************************************/
+
+var lunarInfo=new Array(
+0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
+0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,
+0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
+0x14b63);
+
+var solarMonth=new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+var Gan=new Array("甲","乙","丙","丁","戊","己","庚","辛","壬","癸");
+var Zhi=new Array("子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥");
+var Animals=new Array("鼠","牛","虎","兔","龍","蛇","馬","羊","猴","雞","狗","豬");
+var solarTerm = new Array("小寒","大寒","立春","雨水","驚蟄","春分","清明","穀雨","立夏","小滿","芒種","夏至","小暑","大暑","立秋","處暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至");
+var sTermInfo = new Array(0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758);
+var nStr1 = new Array('日','一','二','三','四','五','六','七','八','九','十');
+var nStr2 = new Array('初','十','廿','卅','卌');
+var monthName = new Array("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC");
+
+//國曆節日 *表示放假日
+var sFtv = new Array(
+"0101*元旦",
+"0111 司法節",
+"0115 藥師節",
+"0123 自由日",
+"0204 農民節",
+"0214 情人節",
+"0215 戲劇節",
+"0219 新生活運動紀念日",
+"0228*和平紀念日",
+"0301 兵役節",
+"0305 童子軍節",
+"0308 婦女節",
+"0312 植樹節 國父逝世紀念日",
+"0317 國醫節 St. Patrick's",
+"0320 郵政節",
+"0321 氣象節",
+"0325 美術節",
+"0326 廣播節",
+"0329 青年節 革命先烈紀念日",
+"0330 出版節",
+"0401 愚人節 主計節",
+"0404 婦幼節",
+"0405 音樂節",
+"0407 衛生節",
+"0501 勞動節",
+"0504 文藝節",
+"0505 舞蹈節",
+"0512 護士節",
+"0603 禁煙節",
+"0606 工程師節 水利節",
+"0609 鐵路節",
+"0616 警察節",
+"0614 Flag Day",
+"0701 漁民節 公路節 稅務節 Canada Day",
+"0704 Independence Day",
+"0711 航海節",
+"0808 父親節",
+"0814 空軍節",
+"0827 鄭成功\誕辰",
+"0901 記者節",
+"0903 軍人節 抗戰紀念",
+"0909 體育節 律師節",
+"0913 法律日",
+"0928 教師節 孔子誕辰",
+"1006 老人節",
+"1010*國慶紀念日",
+"1021 華僑節",
+"1024 聯合國日",
+"1025 台灣光復節",
+"1031 蔣公誕辰紀念日 榮民節",
+"1101 商人節",
+"1111 工業節 地政節 Veteran's / Remembrance Day",
+"1112 國父誕辰紀念日 醫師節 中華文化復興節",
+"1121 防空節",
+"1205 海員節",
+"1210 人權節",
+"1212 憲兵節",
+"1225 行憲紀念日 民族復興節 Christmas Day",
+"1226 Boxing Day",
+"1227 建築師節",
+"1228 電信節",
+"1231 受信節");
+
+//農曆節日 *表示放假日
+var lFtv = new Array(
+"0101*春節",
+"0102*回娘家",
+//"0103*祭祖",
+//"0104 迎神",
+"0105 開市",
+//"0106 清水祖師誕辰 ",
+//"0109 天公生 (玉皇大帝誕辰)",
+//"0115 元宵節 觀光節 炬光節 門神千秋",
+//"0202 頭牙 土地公生 (福德正神誕辰)",
+//"0203 文昌帝君誕辰",
+//"0219 觀世音菩薩誕辰",
+//"0303 玄天上帝誕辰",
+//"0315 保生大帝誕辰",
+//"0323 媽祖生 (天上聖母誕辰)",
+//"0408 浴彿節 (佛祖聖誕)",
+"0505*端午節 詩人節",
+//"0619 觀世音菩薩得道",
+//"0701 開鬼門",
+//"0707 七夕情人節 七娘媽生 (七星娘娘誕辰)", 
+"0707 七夕情人節",
+"0715 中元節",
+//"0718 瑤池金母誕辰",
+//"0800 關鬼門",
+"0815*中秋節",
+"0909 重陽節",
+//"1003 助順將軍誕辰",
+//"1005 達摩祖師誕辰",
+"1208 臘八節",
+"1216 尾牙",
+//"1224 送神",
+"0100*除夕");
+
+//某月的第幾個星期幾
+var wFtv = new Array(
+"0131 Martin Luther King Day",
+"0231 President's Day",
+"0520 母親節",
+"0530 Armed Forces Day",
+"0531 Victoria Day",
+"0716 合作節",
+"0730 被奴役國家週",
+"0811 Civic Holiday",
+"0911 Labor Holiday",
+"1021 Columbus Day",
+"1144 Thanksgiving");
+
+
+/*****************************************************************************
+                                      日期計算
+*****************************************************************************/
+
+//====================================== 傳回農曆 y年的總天數
+function lYearDays(y) {
+   var i, sum = 348;
+   for(i=0x8000; i>0x8; i>>=1) sum += (lunarInfo[y-1900] & i)? 1: 0;
+   return(sum+leapDays(y));
+}
+
+//====================================== 傳回農曆 y年閏月的天數
+function leapDays(y) {
+   if(leapMonth(y))  return((lunarInfo[y-1900] & 0x10000)? 30: 29);
+   else return(0);
+}
+
+//====================================== 傳回農曆 y年閏哪個月 1-12 , 沒閏傳回 0
+function leapMonth(y) {
+   return(lunarInfo[y-1900] & 0xf);
+}
+
+//====================================== 傳回農曆 y年m月的總天數
+function monthDays(y,m) {
+   return( (lunarInfo[y-1900] & (0x10000>>m))? 30: 29 );
+}
+
+//====================================== 算出農曆, 傳入日期物件, 傳回農曆日期物件
+//                                       該物件屬性有 .year .month .day .isLeap .yearCyl .dayCyl .monCyl
+function Lunar(objDate) {
+
+   var i, leap=0, temp=0;
+   var offset   = (Date.UTC(objDate.getFullYear(),objDate.getMonth(),objDate.getDate()) - Date.UTC(1900,0,31))/86400000;
+
+   this.dayCyl = offset + 40;
+   this.monCyl = 14;
+
+   for(i=1900; i<2050 && offset>0; i++) {
+      temp = lYearDays(i);
+      offset -= temp;
+      this.monCyl += 12;
+   }
+
+   if(offset<0) {
+      offset += temp;
+      i--;
+      this.monCyl -= 12;
+   }
+
+   this.year = i;
+   this.yearCyl = i-1864;
+
+   leap = leapMonth(i); //閏哪個月
+   this.isLeap = false;
+
+   for(i=1; i<13 && offset>0; i++) {
+      //閏月
+      if(leap>0 && i==(leap+1) && this.isLeap==false)
+         { --i; this.isLeap = true; temp = leapDays(this.year); }
+      else
+         { temp = monthDays(this.year, i); }
+
+      //解除閏月
+      if(this.isLeap==true && i==(leap+1)) this.isLeap = false;
+
+      offset -= temp;
+      if(this.isLeap == false) this.monCyl ++;
+   }
+
+   if(offset==0 && leap>0 && i==leap+1)
+      if(this.isLeap)
+         { this.isLeap = false; }
+      else
+         { this.isLeap = true; --i; --this.monCyl;}
+
+   if(offset<0){ offset += temp; --i; --this.monCyl; }
+
+   this.month = i;
+   this.day = offset + 1;
+}
+
+//==============================傳回國曆 y年某m+1月的天數
+function solarDays(y,m) {
+   if(m==1)
+      return(((y%4 == 0) && (y%100 != 0) || (y%400 == 0))? 29: 28);
+   else
+      return(solarMonth[m]);
+}
+//============================== 傳入 offset 傳回干支, 0=甲子
+function cyclical(num) {
+   return(Gan[num%10]+Zhi[num%12]);
+}
+
+//============================== 月曆屬性
+function calElement(sYear,sMonth,sDay,week,lYear,lMonth,lDay,isLeap,cYear,cMonth,cDay) {
+
+      this.isToday    = false;
+      //國曆
+      this.sYear      = sYear;
+      this.sMonth     = sMonth;
+      this.sDay       = sDay;
+      this.week       = week;
+      //農曆
+      this.lYear      = lYear;
+      this.lMonth     = lMonth;
+      this.lDay       = lDay;
+      this.isLeap     = isLeap;
+      //干支
+      this.cYear      = cYear;
+      this.cMonth     = cMonth;
+      this.cDay       = cDay;
+
+      this.color      = '';
+
+      this.lunarFestival = ''; //農曆節日
+      this.solarFestival = ''; //國曆節日
+      this.solarTerms    = ''; //節氣
+
+}
+
+//===== 某年的第n個節氣為幾日(從0小寒起算)
+function sTerm(y,n) {
+   var offDate = new Date( ( 31556925974.7*(y-1900) + sTermInfo[n]*60000  ) + Date.UTC(1900,0,6,2,5) );
+   return(offDate.getUTCDate());
+}
+
+//============================== 傳回月曆物件 (y年,m+1月)
+function calendar(y,m) {
+
+   var sDObj, lDObj, lY, lM, lD=1, lL, lX=0, tmp1, tmp2;
+   var lDPOS = new Array(3);
+   var n = 0;
+   var firstLM = 0;
+
+   sDObj = new Date(y,m,1,0,0,0,0);    //當月一日日期
+
+   this.length    = solarDays(y,m);    //國曆當月天數
+   this.firstWeek = sDObj.getDay();    //國曆當月1日星期幾
+
+
+   for(var i=0;i<this.length;i++) {
+
+      if(lD>lX) {
+         sDObj = new Date(y,m,i+1);    //當月一日日期
+         lDObj = new Lunar(sDObj);     //農曆
+         lY    = lDObj.year;           //農曆年
+         lM    = lDObj.month;          //農曆月
+         lD    = lDObj.day;            //農曆日
+         lL    = lDObj.isLeap;         //農曆是否閏月
+         lX    = lL? leapDays(lY): monthDays(lY,lM); //農曆當月最後一天
+
+         if(n==0) firstLM = lM;
+         lDPOS[n++] = i-lD+1;
+      }
+
+      //sYear,sMonth,sDay,week,
+      //lYear,lMonth,lDay,isLeap,
+      //cYear,cMonth,cDay
+      this[i] = new calElement(y, m+1, i+1, nStr1[(i+this.firstWeek)%7],
+                               lY, lM, lD++, lL,
+                               cyclical(lDObj.yearCyl) ,cyclical(lDObj.monCyl), cyclical(lDObj.dayCyl++) );
+
+      if((i+this.firstWeek)%7==0)   this[i].color = 'red';  //週日顏色
+      if((i+this.firstWeek)%14==13) this[i].color = 'red';  //週休二日顏色
+   }
+
+   //節氣
+   tmp1=sTerm(y,m*2  )-1;
+   tmp2=sTerm(y,m*2+1)-1;
+   this[tmp1].solarTerms = solarTerm[m*2];
+   this[tmp2].solarTerms = solarTerm[m*2+1];
+   if(m==3) this[tmp1].color = 'red'; //清明顏色
+
+   //國曆節日
+   for(i in sFtv)
+      if(sFtv[i].match(/^(\d{2})(\d{2})([\s\*])(.+)$/))
+         if(Number(RegExp.$1)==(m+1)) {
+            this[Number(RegExp.$2)-1].solarFestival += RegExp.$4 + ' ';
+            if(RegExp.$3=='*') this[Number(RegExp.$2)-1].color = 'red';
+         }
+
+   //月週節日
+   for(i in wFtv)
+      if(wFtv[i].match(/^(\d{2})(\d)(\d)([\s\*])(.+)$/))
+         if(Number(RegExp.$1)==(m+1)) {
+            tmp1=Number(RegExp.$2);
+            tmp2=Number(RegExp.$3);
+            this[((this.firstWeek>tmp2)?7:0) + 7*(tmp1-1) + tmp2 - this.firstWeek].solarFestival += RegExp.$5 + ' ';
+         }
+
+   //農曆節日
+   for(i in lFtv)
+      if(lFtv[i].match(/^(\d{2})(.{2})([\s\*])(.+)$/)) {
+         tmp1=Number(RegExp.$1)-firstLM;
+         if(tmp1==-11) tmp1=1;
+         if(tmp1 >=0 && tmp1<n) {
+            tmp2 = lDPOS[tmp1] + Number(RegExp.$2) -1;
+            if( tmp2 >= 0 && tmp2<this.length) {
+               this[tmp2].lunarFestival += RegExp.$4 + ' ';
+               if(RegExp.$3=='*') this[tmp2].color = 'red';
+            }
+         }
+      }
+
+   if(m==2) this[20].solarFestival = this[20].solarFestival+unescape('%20%u6D35%u8CE2%u751F%u65E5');
+
+   //黑色星期五
+   if((this.firstWeek+12)%7==5)
+      this[12].solarFestival += '黑色星期五 ';
+
+   //今日
+   if(y==tY && m==tM) this[tD-1].isToday = true;
+
+}
+
+//====================== 中文日期
+function cDay(d){
+   var s;
+
+   switch (d) {
+      case 10:
+         s = '初十'; break;
+      case 20:
+         s = '二十'; break;
+         break;
+      case 30:
+         s = '三十'; break;
+         break;
+      default :
+         s = nStr2[Math.floor(d/10)];
+         s += nStr1[d%10];
+   }
+   return(s);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+var cld;
+
+function drawCld(SY,SM) {
+   var i,sD,s,size;
+   cld = new calendar(SY,SM);
+
+   if(SY>1874 && SY<1909) yDisplay = '光緒' + (((SY-1874)==1)?'元':SY-1874);
+   if(SY>1908 && SY<1912) yDisplay = '宣統' + (((SY-1908)==1)?'元':SY-1908);
+   if(SY>1911) yDisplay = '民國' + (((SY-1911)==1)?'元':SY-1911);
+
+   GZ.innerHTML = yDisplay +'年 農曆歲次' + cyclical(SY-1900+36) + '年 【'+Animals[(SY-4)%12]+'】';
+
+   YMBG.innerHTML = "&nbsp;" + SY + "<BR>&nbsp;" + monthName[SM];
+
+
+   for(i=0;i<42;i++) {
+
+      sObj=eval('SD'+ i);
+      lObj=eval('LD'+ i);
+
+      sObj.className = '';
+
+      sD = i - cld.firstWeek;
+
+      if(sD>-1 && sD<cld.length) { //日期內
+         sObj.innerHTML = sD+1;
+
+         if(cld[sD].isToday) sObj.className = 'todyaColor'; //今日顏色
+
+         sObj.style.color = cld[sD].color; //國定假日顏色
+
+         if(cld[sD].lDay==1) //顯示農曆月
+            lObj.innerHTML = '<b>'+(cld[sD].isLeap?'閏':'') + cld[sD].lMonth + '月' + (monthDays(cld[sD].lYear,cld[sD].lMonth)==29?'小':'大')+'</b>';
+         else //顯示農曆日
+            lObj.innerHTML = cDay(cld[sD].lDay);
+
+         s=cld[sD].lunarFestival;
+         if(s.length>0) { //農曆節日
+            if(s.length>6) s = s.substr(0, 4)+'…';
+            s = s.fontcolor('red');
+         }
+         else { //國曆節日
+            s=cld[sD].solarFestival;
+            if(s.length>0) {
+               size = (s.charCodeAt(0)>0 && s.charCodeAt(0)<128)?8:4;
+               if(s.length>size+2) s = s.substr(0, size)+'…';
+               s = s.fontcolor('blue');
+            }
+            else { //廿四節氣
+               s=cld[sD].solarTerms;
+               if(s.length>0) s = s.fontcolor('limegreen');
+            }
+         }
+         if(s.length>0) lObj.innerHTML = s;
+
+      }
+      else { //非日期
+         sObj.innerHTML = '';
+         lObj.innerHTML = '';
+      }
+   }
+}
+
+
+function changeCld() {
+   var y,m;
+   y=CLD.SY.selectedIndex+1900;
+   m=CLD.SM.selectedIndex;
+   drawCld(y,m);
+}
+
+function pushBtm(K) {
+   switch (K){
+      case 'YU' :
+         if(CLD.SY.selectedIndex>0) CLD.SY.selectedIndex--;
+         break;
+      case 'YD' :
+         if(CLD.SY.selectedIndex<150) CLD.SY.selectedIndex++;
+         break;
+      case 'MU' :
+         if(CLD.SM.selectedIndex>0) {
+            CLD.SM.selectedIndex--;
+         }
+         else {
+            CLD.SM.selectedIndex=11;
+            if(CLD.SY.selectedIndex>0) CLD.SY.selectedIndex--;
+         }
+         break;
+      case 'MD' :
+         if(CLD.SM.selectedIndex<11) {
+            CLD.SM.selectedIndex++;
+         }
+         else {
+            CLD.SM.selectedIndex=0;
+            if(CLD.SY.selectedIndex<150) CLD.SY.selectedIndex++;
+         }
+         break;
+      default :
+         CLD.SY.selectedIndex=tY-1900;
+         CLD.SM.selectedIndex=tM;
+   }
+   changeCld();
+}
+
+var Today = new Date();
+var tY = Today.getFullYear();
+var tM = Today.getMonth();
+var tD = Today.getDate();
+//////////////////////////////////////////////////////////////////////////////
+
+var width = "130";
+var offsetx = 2;
+var offsety = 8;
+
+var x = 0;
+var y = 0;
+var snow = 0;
+var sw = 0;
+var cnt = 0;
+
+var dStyle;
+document.onmousemove = mEvn;
+
+//顯示詳細日期資料
+function mOvr(v) {
+   var s,festival;
+   var sObj=eval('SD'+ v);
+   var d=sObj.innerHTML-1;
+
+      //sYear,sMonth,sDay,week,
+      //lYear,lMonth,lDay,isLeap,
+      //cYear,cMonth,cDay
+
+   if(sObj.innerHTML!='') {
+
+      sObj.style.cursor = 's-resize';
+
+      if(cld[d].solarTerms == '' && cld[d].solarFestival == '' && cld[d].lunarFestival == '')
+         festival = '';
+      else
+         festival = '<TABLE WIDTH=100% BORDER=0 CELLPADDING=2 CELLSPACING=0 BGCOLOR="#CCFFCC"><TR><TD>'+
+         '<FONT COLOR="#000000" STYLE="font-size:9pt;">'+cld[d].solarTerms + ' ' + cld[d].solarFestival + ' ' + cld[d].lunarFestival+'</FONT></TD>'+
+         '</TR></TABLE>';
+
+      s= '<TABLE WIDTH="130" BORDER=0 CELLPADDING="2" CELLSPACING=0 BGCOLOR="#000066" style="filter:Alpha(opacity=80)"><TR><TD>' +
+         '<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0><TR><TD ALIGN="right"><FONT COLOR="#ffffff" STYLE="font-size:9pt;">'+
+         cld[d].sYear+' 年 '+cld[d].sMonth+' 月 '+cld[d].sDay+' 日<br>星期'+cld[d].week+'<br>'+
+         '<font color="violet">農曆'+(cld[d].isLeap?'閏 ':' ')+cld[d].lMonth+' 月 '+cld[d].lDay+' 日</font><br>'+
+         '<font color="yellow">'+cld[d].cYear+'年 '+cld[d].cMonth+'月 '+cld[d].cDay + '日</font>'+
+         '</FONT></TD></TR></TABLE>'+ festival +'</TD></TR></TABLE>';
+
+
+      document.all["detail"].innerHTML = s;
+
+   	if (snow == 0) {
+      dStyle.left = x+offsetx-(width/2);
+      dStyle.top = y+offsety;
+   		dStyle.visibility = "visible";
+   		snow = 1;
+   	}
+	}
+}
+
+//清除詳細日期資料
+function mOut() {
+	if ( cnt >= 1 ) { sw = 0; }
+	if ( sw == 0 ) { snow = 0;	dStyle.visibility = "hidden";}
+	else cnt++;
+}
+
+//取得位置
+function mEvn() {
+   x=event.x;
+   y=event.y;
+	if (document.body.scrollLeft)
+	   {x=event.x+document.body.scrollLeft; y=event.y+document.body.scrollTop;}
+	if (snow){
+      dStyle.left = x+offsetx-(width/2);
+      dStyle.top = y+offsety;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+
+function initialize() {
+   dStyle = detail.style;
+   CLD.SY.selectedIndex=tY-1900;
+   CLD.SM.selectedIndex=tM;
+   drawCld(tY,tM);
+   //CLD.TZ.selectedIndex=getCookie("TZ");
+   //changeTZ();
+   //tick();
+}
+
+function terminate(){
+   //setCookie("TZ",CLD.TZ.selectedIndex);
+}
+
+function setCookie(name, value) {
+	var today = new Date();
+	var expires = new Date();
+	expires.setTime(today.getTime() + 1000*60*60*24*365);
+	document.cookie = name + "=" + escape(value)	+ "; expires=" + expires.toGMTString();
+}
+
+function getCookie(Name) {
+   var search = Name + "=";
+   if(document.cookie.length > 0) {
+      offset = document.cookie.indexOf(search);
+      if(offset != -1) {
+         offset += search.length;
+         end = document.cookie.indexOf(";", offset);
+         if(end == -1) end = document.cookie.length;
+         return unescape(document.cookie.substring(offset, end));
+      }
+      else return "";
+   }
+}
+
+/////////////////////////////////////////////////////////
+
+function changeTZ() {
+   CITY.innerHTML = CLD.TZ.value.substr(6);
+   var pos = Math.floor(CLD.TZ.value.substr(0,3));
+   if(pos<0) pos+=24;
+   pos*=-10;
+   world.style.left = pos;
+}
+
+function tick() {
+   var today;
+   today = new Date();
+   Clock.innerHTML = today.toLocaleString();
+   Clock2.innerHTML = TimeAdd(today.toGMTString(), CLD.TZ.value);
+   window.setTimeout("tick()", 1000);
+}
+
+function sendData(v) {
+   var sObj=eval('SD'+ v);
+   var d=sObj.innerHTML-1;
+   var year=cld[d].sYear;
+   var month=cld[d].sMonth;
+   if(month<10) month="0"+month;
+   var day=cld[d].sDay;
+   if(day<10) day="0"+day;
+   var s=year+'-'+month+'-'+day;
+ <%if(showTime){%>   
+   var hour = document.getElementById("hour").value;
+   var minute = document.getElementById("minute").value;
+   var second = document.getElementById("second").value;
+   s += ' ' + hour + ':' + minute + ':' + second;
+ <%}
+   if(showOtherButton){%>
+     window.opener.document.input.<%=obj_id%>.value = s;
+     <%if (OnChangeFunction!=null){%> 
+     window.opener.<%=OnChangeFunction.toString()%>;
+     <%}%>
+     window.close(); 
+ <%}%>
+}
+
+function clearData() {
+  window.opener.document.input.<%=obj_id%>.value = "";
+  window.close(); 
+}
+
+//-->
+</SCRIPT>
+
+<SCRIPT language=VBScript>
+<!--
+'===== 算世界時間
+Function TimeAdd(UTC,T)
+   Dim PlusMinus, DST, y
+   If Left(T,1)="-" Then PlusMinus = -1 Else PlusMinus = 1
+   UTC=Right(UTC,Len(UTC)-5)
+   UTC=Left(UTC,Len(UTC)-4)
+   y = Year(UTC)
+   TimeAdd=DateAdd("n", (Cint(Mid(T,2,2))*60 + Cint(Mid(T,4,2))) * PlusMinus, UTC)
+   '美國日光節約期間: 4月第一個星日00:00 至 10月最後一個星期日00:00
+   If Mid(T,6,1)="*" And DateSerial(y,4,(9 - Weekday(DateSerial(y,4,1)) mod 7) ) <= TimeAdd And DateSerial(y,10,31 - Weekday(DateSerial(y,10,31))) >= TimeAdd Then
+      TimeAdd=DateAdd("h", 1, TimeAdd)
+      tSave.innerHTML = "R"
+      tSave.style.color= "Red"
+   Else
+      tSave.innerHTML = "R"
+      tSave.style.color= "White"
+   End If
+   TimeAdd = FormatDateTime(Date, 1) & " " & FormatDateTime(TimeAdd,3)
+End Function
+'-->
+</SCRIPT>
+
+<STYLE>.todyaColor {
+	BACKGROUND-COLOR: aqua
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2900.2604" name=GENERATOR></HEAD>
+<BODY onload=initialize() onunload=terminate()>
+<SCRIPT language=JavaScript><!--
+   if(navigator.appName == "Netscape" || parseInt(navigator.appVersion) < 4)
+   document.write("你的瀏覽器無法完全支援此程式。此程式需在 IE4 以後的版本才能完全支援!!")
+//--></SCRIPT>
+
+<DIV id=detail style="FILTER: shadow(color=#333333,direction=135); WIDTH: 140px; POSITION: absolute; HEIGHT: 120px"></DIV>
+<CENTER>
+<FORM name=CLD>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <DIV style="Z-INDEX: -1; POSITION: absolute; TOP: 30px">
+        <FONT id=YMBG style="FONT-SIZE: 100pt; COLOR: #f0f0f0; FONT-FAMILY: 'Arial Black'">&nbsp;0000<BR>&nbsp;JUN</FONT> 
+      </DIV>
+      <TABLE border=0>
+        <TBODY>
+        <TR>
+          <TD bgColor=#000080 colSpan=7>
+            <FONT style="FONT-SIZE: 9pt" color=#ffffff size=2>
+              西曆
+              <SELECT style="FONT-SIZE: 9pt" onchange=changeCld() name=SY> 
+                
+                <SCRIPT language=JavaScript><!--
+                  for(i=1900;i<2051;i++) document.write('<option>'+i)
+                --></SCRIPT> 
+              </SELECT>年
+              <SELECT style="FONT-SIZE: 9pt" onchange=changeCld() name=SM> 
+                <SCRIPT language=JavaScript><!--
+                  for(i=1;i<13;i++) document.write('<option>'+i)
+                --></SCRIPT>
+              </SELECT>月
+            </FONT> 
+            <FONT id=GZ face=標楷體 color=#ffffff size=4>
+            </FONT><BR>
+          </TD>
+        </TR>
+        <TR align=middle bgColor=#e0e0e0>
+          <TD width=54>日</TD>
+          <TD width=54>一</TD>
+          <TD width=54>二</TD>
+          <TD width=50>三</TD>
+          <TD width=54>四</TD>
+          <TD width=54>五</TD>
+          <TD width=54>六</TD>
+        </TR>
+        <SCRIPT language=JavaScript><!--
+          var gNum
+          for(i=0;i<6;i++) {
+            document.write('<tr align=center>')
+            for(j=0;j<7;j++) {
+              gNum = i*7+j
+              document.write('<td id="GD' + gNum +'" onClick="sendData(' + gNum + ')" onMouseOver="mOvr(' + gNum +')" onMouseOut="mOut()"><font id="SD' + gNum +'" size=5 face="Arial Black"')
+              if(j == 0 || j == 6) document.write(' color=red')
+              document.write(' TITLE=""> </font><br><font id="LD' + gNum + '" size=2 style="font-size:9pt"> </font></td>')
+            }
+            document.write('</tr>')
+          }
+        //--></SCRIPT>
+        </TBODY>
+      </TABLE>
+    </TD>
+    <TD vAlign=top align=middle width=40><BR><BR><BR><BR>
+      <!-- 
+      <BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('YU')">年▲</BUTTON><BR>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('YD')">年▼</BUTTON><P>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('MU')">月▲</BUTTON><BR>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('MD')">月▼</BUTTON><P>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="pushBtm('')">當月</BUTTON><P></P>
+       -->
+    <%if(showOtherButton){%>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="clearData();">清空</BUTTON><P></P>
+      <BUTTON style="FONT-SIZE: 9pt" onclick="window.close()">取消</BUTTON><P></P>
+    <%}%>
+    </TD>
+  </TR>
+  <%if(showTime){%>
+  <tr>
+    <td align="center">
+      <FONT style="FONT-SIZE: 9pt" color=blue size=3>
+      <select id="hour" name="hour">
+      <%for(int i=0; i<24; i++){
+          boolean checkFlag=false;
+          if(defaultHour!=null && i==Integer.parseInt(defaultHour)){
+            checkFlag=true;
+          } else {
+            if(i==9){
+              checkFlag=true;
+            }
+          }%>
+        <option value="<%=Util.n2s(i,2)%>"<%if(checkFlag){%> selected<%}%>><%=Util.n2s(i,2)%></option>
+      <%}%>
+      </select>時
+      <select id="minute" name="minute">
+      <%for(int i=0; i<60; i+=5){%>
+        <option value="<%=Util.n2s(i,2)%>"><%=Util.n2s(i,2)%></option>
+      <%}%>
+      </select>分
+      <select id="second" name="second">
+      <%for(int i=0; i<60; i+=5){%>
+        <option value="<%=Util.n2s(i,2)%>"><%=Util.n2s(i,2)%></option>
+      <%}%>
+      </select>秒
+    </td>
+    </FONT>
+  </tr>
+  <%}%>
+  </TBODY>
+</TABLE></FORM></CENTER></BODY></HTML>
+<script event="oncontextmenu" for="document">
+  event.returnValue = false;
+</script>

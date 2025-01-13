@@ -1,0 +1,229 @@
+.bglogin {
+	background-image: url(images/bg_logo.gif);
+	background-repeat: repeat-x;
+	height: 62px;
+}
+.white {
+	font-size: 10pt;
+	line-height: 14pt;
+	color: #FFFFFF;
+}
+.yellow {
+	font-size: 10pt;
+	line-height: 14pt;
+	font-weight: bold;
+	color: #FFECC2;
+}
+.but01 {
+	background-image: url(images/bg_but.gif);
+	background-repeat: no-repeat;
+	height: 35px;
+	width: 212px;
+	text-indent: 30px;
+	color: #FFFFFF;
+}
+td {
+	font-size: 10pt;
+}
+a.buttext {
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+}
+
+.bgtd {
+	font-family: "�s�ө���";
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #000000;
+	background-color: #FFFFFF;
+}
+.tiwhite {
+	font-size: 10pt;
+	font-weight: bolder;
+	color: #FFFFFF;
+	text-indent: 15px;
+	padding-top: 15px;
+}
+input {
+	font-size: 10pt;
+	color: #333333;
+}
+.tisecond {
+	background-image: url(images/bg_bar.gif);
+	background-repeat: repeat;
+	height: 30px;
+	font-size: 10pt;
+	line-height: 18pt;
+}
+.ti01 {
+	font-size: 10pt;
+	line-height: 22pt;
+	color: #663300;
+	padding-left: 15px;
+	font-weight: bold;
+}
+a:link {
+	font-size: 10pt;
+	color: #663300;
+	text-decoration: none;
+}
+
+
+
+hr {
+	color: #999999;
+}
+
+.title {
+	font-weight: bold;
+	color: #000000;
+	font-size: 13px;
+}
+select {
+	font-size: 10pt;
+	lin
+a:visited {
+	font-size: 10pt;
+	color: #663300;
+}
+a:active {
+	font-size: 10pt;
+	color: #663300;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 10pt;
+	color: #663300;
+	text-decoration: underline;
+}
+a.buttext:link {
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+	text-decoration: none;
+}
+a.buttext:visited{
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+	text-decoration: none;
+}
+a.buttext:hover {
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+	text-decoration: underline;
+}
+a.buttext:active {
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+	text-decoration: none;
+}
+
+a.buttext01 {
+	font-weight: bold;
+	color: #663300;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+}
+.but02 {
+	text-indent: 30px;
+}
+.lableover{
+	height: 25px;
+	width: 62px;
+}
+#over {
+	line-height: 16pt;
+	background-attachment: fixed;
+	background-image: url(images/bar_label.gif);
+	background-repeat: no-repeat;
+	height: 25px;
+	width: 62px;
+}
+a:visited {
+	font-size: 10pt;
+	color: #663300;
+}
+
+#out {
+	line-height: 18pt;
+}
+
+.lableout {
+	height: 25px;
+	width: 62px;
+}
+font {
+	font-size: 10pt;
+}
+hr {
+	color: #999999;
+}
+.tibar {
+	font-size: 10pt;
+	line-height: 18pt;
+	font-weight: bold;
+	color: #000000;
+	text-indent: 10px;
+}
+a.persontop {
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #663300;
+	text-decoration: none;
+}
+a.persontop:hover {
+
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #663300;
+}
+a.persontop:visited {
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #FFFFFF;
+	text-decoration: none;
+	font-weight: bold;
+	background-color: #5E2F00;
+}
+a.persontop:link {
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #663300;
+	text-decoration: none;
+}
+a.persontop:active  {
+
+	font-size: 10pt;
+	line-height: 18pt;
+	color: #663300;
+}
+.buttext {
+
+	font-weight: bold;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-bottom: 10px;
+	font-size: 10pt;
+	line-height: 24pt;
+}

@@ -1,0 +1,64 @@
+<%/* =========== showFlow.include =========== */%>
+<%if(FlowEngin.getRunFlag(program_id)) {
+    Iterator fdItr = new Flow(thisObj.getFlowKey()).getDetails().iterator();
+    boolean firstFlag = true;
+    while(fdItr.hasNext()) {
+      if(firstFlag){%>
+      <table class="input">
+        <tr>
+          <td align="center" colspan="7">
+            <B><font size="+1"><%=userInfo.getMsg("jsp.showFlow.title")%></font></B>
+          </td>
+        </tr>
+        <tr>
+          <td width="5%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Step")%>
+          </td>
+          <td width="16%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Step_name")%>
+          </td>
+          <td width="16%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Signer_name")%>
+          </td>
+          <td width="18%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Signed_time")%>
+          </td>
+          <td width="10%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Signed_result")%>
+          </td>
+          <td width="30%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Memo")%>
+          </td>
+          <td width="5%" align="center">
+            <%=userInfo.getMsg("jsp.Flow_detail.Decided")%>
+          </td>
+        </tr>
+      <%firstFlag=false;
+      }
+      Flow_detail fd = (Flow_detail)fdItr.next();
+      final_result = Util.changeMsg(userInfo.getAttribute("language"),fd.getSigned_result());%>
+        <tr>
+          <td align="center"><%=fd.getStep()%></td>
+          <td><input type="text" size="14" value="<%=fd.getStep_name()%>" <%=readonly%>></td>
+          <td><input type="text" size="14" value="<%=fd.getSigner_name()+" "+fd.getSigner_title()%>" <%=readonly%>></td>
+          <td><input type="text" size="18" value="<%=fd.getSigned_time()%>" <%=readonly%>></td>
+          <td><input type="text" size="5" value="<%=final_result%>" <%=readonly%>></td>
+          <%boolean openAlert = false;
+            if(fd.getMemo().length()>16) openAlert = true;%>
+          <td><input type="text" size="36" 
+               <%if(openAlert){%>onClick="alert('<%=fd.getMemo()%>')"<%}%> 
+                     value="<%=fd.getMemo()%>" <%=readonly%>>
+          </td>
+          <td align="center">
+            <%if(fd.getDecided().equals("1")){%>
+              <img src="img/tick.gif"/>
+            <%}%>
+          </td>	
+        </tr>
+    <%if(!fdItr.hasNext()){%>
+      </table>
+    <%}
+    }%>
+    <input type="hidden" id="showFlow" name="showFlow" value="true"/>  
+ <%}%>
+ <%/* =========== showFlow.include =========== */%>

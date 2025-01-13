@@ -1,0 +1,43 @@
+<%/* =========== closeForm.new =========== */%>
+<%if(showCloseForm) {
+  Program thisProgram = new Program(program_id);
+  boolean canReject = false;
+  if(thisProgram.getCloseCanReject().equals("Y")) 
+    canReject=true;%>
+    <input type="hidden" id="closeForm" name="closeForm" value="true"/>
+  <%if(canReject){%>
+    <input type="hidden" id="closeReject" name="closeReject" value=""/>
+  <%}%>
+  <table border="1">
+    <tr>
+      <td align="center" colspan="3">
+        <B><font size="3"><%=userInfo.getMsg("jsp.closeForm.title")%></font></B>
+      </td>
+    </tr>
+  <%if(canReject){%>   
+    <tr>
+      <td align="center" width="10%">
+        <%=userInfo.getMsg("jsp.closeForm.reason")%>
+      </td>
+      <td align="center" colspan="2">
+        <textarea id="rejectReason" name="rejectReason" rows="3" cols="50"></textarea>
+      </td>
+    </tr>
+    
+    <tr>
+      <td align="center" colspan="2">
+        <input type="button" value="<%=userInfo.getMsg("jsp.closeForm.reject")%>"
+               onClick="document.input.closeReject.value='true';setSubmitValue()"/>
+      </td>
+      <td align="center" width="50%">
+  <%} else {%>
+    <tr>
+      <td align="center" colspan="3">
+  <%}%>
+        <input type="button" value="<%=userInfo.getMsg("jsp.closeForm.close")%>"
+               onClick="setSubmitValue()"/>
+      </td>
+    </tr>
+  </table>
+<%}%>
+<%/* =========== closeForm.new =========== */%>

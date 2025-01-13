@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<Context path="/infos" reloadable="true" 
+         docBase="D:\tomcat5\webapps\infos" 
+         workDir="D:\tomcat5\webapps\infos\work">
+  
+  <Resource name="jdbc/dbInfo" type="javax.sql.DataSource"/>
+  <ResourceParams name="jdbc/dbInfo">
+    <parameter>
+      <name>driverClassName</name>
+      <!-- for mysql use 
+      <value>com.mysql.jdbc.Driver</value>
+      -->
+      <!-- for sql2000 use -->
+      <value>net.sourceforge.jtds.jdbc.Driver</value>
+      
+    </parameter>
+    <parameter>
+      <name>url</name>
+      <!-- for mysql use 
+      <value>jdbc:mysql://localhost:3306/education?useUnicode=true&amp;characterEncoding=utf-8</value>
+      -->
+      <!-- for sql2000 use -->
+      <value>jdbc:jtds:sqlserver://localhost:1433/infos</value>
+      
+    </parameter>
+    <parameter>
+      <name>username</name>
+      <value>sa</value>
+    </parameter>
+    <parameter>
+      <name>password</name>
+      <value>gp2u03</value>
+    </parameter>
+    <parameter>
+      <name>maxWait</name>
+      <value>5000</value>
+    </parameter>
+    <parameter>
+      <name>maxActive</name>
+      <value>500</value>
+    </parameter>
+    <parameter>
+      <name>maxIdle</name>
+      <value>2</value>
+    </parameter>
+  </ResourceParams>
+
+</Context>
