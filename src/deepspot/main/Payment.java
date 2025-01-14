@@ -1527,13 +1527,24 @@ public class Payment extends MasterBean {
     	String rtnString = "";
     	if(this.onMaintainMode()) {
             if(this.FlowKey.getValue().trim().length() > 0) {
+            	boolean canShowTabs3 = false;
+            	Groups group = new Groups();
+            	//相關請款資訊tab調整為G012、G013、G014不可看到(只要跨到3個任一群組就不能看)
+				if(!group.inGorup("G012", this.getUserInfo().getAttribute("emp_id")) &&
+						!group.inGorup("G013", this.getUserInfo().getAttribute("emp_id")) &&
+						!group.inGorup("G014", this.getUserInfo().getAttribute("emp_id"))) {
+					canShowTabs3 = true;
+				}
+            	
             	String TabSelect = Cnstnts.EMPTY_STRING;
             	rtnString += "<script type='text/javascript'>$(function(){$('#tabs').tabs(" +TabSelect + ");});</script>";
             	rtnString += "<tr><td colspan=4>"+
 				"<div id='tabs'><ul>"+
 				"<li><a href='#tabs-1'>"+this.getUserInfo().getMsg("jsp.PaymentDetail.title")+"</a></li>" +
-				"<li><a href='#tabs-2'>"+this.getUserInfo().getMsg("jsp.ApWriteoffLog.title")+"</a></li>" +
-            	"<li><a href='#tabs-3'>"+this.getUserInfo().getMsg("jsp.Payment.ReleatedInvoiceInfo")+"</a></li>";
+				"<li><a href='#tabs-2'>"+this.getUserInfo().getMsg("jsp.ApWriteoffLog.title")+"</a></li>";
+            	if(canShowTabs3) {
+            		rtnString += "<li><a href='#tabs-3'>"+this.getUserInfo().getMsg("jsp.Payment.ReleatedInvoiceInfo")+"</a></li>";
+            	}
             	rtnString += "</ul>";
             	
             	/**** tabs-1 ****/
@@ -1592,16 +1603,18 @@ public class Payment extends MasterBean {
 	            /**** tabs-2 end ****/
 	            
 	            /**** tabs-3 ****/
-	            rtnString +="<div id='tabs-3'>";
-	            rtnString +="<div class='indent'>";
-	            rtnString +="<table width=95% border=0><tr><td valign=top>";
-	            rtnString +="<div id='updateReleatedInvoiceInfoDiv' name='updateReleatedInvoiceInfoDiv'></div>";
-	            rtnString +="<div id='ReleatedInvoiceInfoDiv' name='ReleatedInvoiceInfoDiv'>";
-	            rtnString += printReleatedInvoiceInfo();
-	            
-	            rtnString +="</div></td></tr></table>";
-	            rtnString +="</div>";
-	            rtnString +="</div>";
+            	if(canShowTabs3) {
+            		rtnString +="<div id='tabs-3'>";
+            		rtnString +="<div class='indent'>";
+            		rtnString +="<table width=95% border=0><tr><td valign=top>";
+            		rtnString +="<div id='updateReleatedInvoiceInfoDiv' name='updateReleatedInvoiceInfoDiv'></div>";
+            		rtnString +="<div id='ReleatedInvoiceInfoDiv' name='ReleatedInvoiceInfoDiv'>";
+            		rtnString += printReleatedInvoiceInfo();
+            		
+            		rtnString +="</div></td></tr></table>";
+            		rtnString +="</div>";
+            		rtnString +="</div>";
+            	}
 	            /**** tabs-3 end ****/
 	            
 	            

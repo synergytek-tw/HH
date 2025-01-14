@@ -1280,6 +1280,14 @@ public class Client extends MasterBean {
     public String printTabAreaHtml() throws Exception {
     	String rtnString = "";
     	if(this.FlowKey.getValue().trim().length() > 0) {
+    		boolean canShowTabs6 = false;
+        	Groups group = new Groups();
+        	//未收款資訊tab調整為G012、G013、G014不可看到(只要跨到3個任一群組就不能看)
+			if(!group.inGorup("G012", this.getUserInfo().getAttribute("emp_id")) &&
+					!group.inGorup("G013", this.getUserInfo().getAttribute("emp_id")) &&
+					!group.inGorup("G014", this.getUserInfo().getAttribute("emp_id"))) {
+				canShowTabs6 = true;
+			}
         	String TabSelect = Cnstnts.EMPTY_STRING;
         	rtnString += "<script type='text/javascript'>createClientTabs();</script>";
         	
@@ -1295,7 +1303,9 @@ public class Client extends MasterBean {
         	rtnString += "<li><a href='#tabs-13'>"+this.getUserInfo().getMsg("jsp.Client.Tabs13")+"</a></li>";
         	rtnString += "<li><a href='#tabs-3'>"+this.getUserInfo().getMsg("jsp.Client.Tabs3")+"</a></li>";
         	rtnString += "<li><a href='#tabs-5'>"+this.getUserInfo().getMsg("jsp.Client.Tabs5")+"</a></li>";
-        	rtnString += "<li><a href='#tabs-6'>"+this.getUserInfo().getMsg("jsp.Client.Tabs6")+"</a></li>";
+        	if(canShowTabs6) {
+        		rtnString += "<li><a href='#tabs-6'>"+this.getUserInfo().getMsg("jsp.Client.Tabs6")+"</a></li>";
+        	}
         	rtnString += "<li><a href='#tabs-7'>"+this.getUserInfo().getMsg("jsp.Client.LastQuotation1")+"</a></li>";
 //        	rtnString += "<li><a href='#tabs-8'>"+this.getUserInfo().getMsg("jsp.Client.LastQuotation2")+"</a></li>";
         	rtnString += "</ul>";
@@ -1430,80 +1440,82 @@ public class Client extends MasterBean {
             rtnString +="</div>";
             /**** tabs-5 end ****/
             
-            /**** tabs-6 ****/
-          //count1 是“已請款台幣總金額”
-            //count2 是“已收款台幣總金額”
-          //count4 是“他方扣繳台幣總額”
-            //count1 - count2 -count 4 = count3 是 “已請款台幣總金額” - “已收款台幣總金額”- 他方扣繳台幣總額(資料來源：Invoice.TotalWithHolding)  = “未收款台幣總金額”
-            String count1 = "";
-            String count2 = "";
-            String count3 = "";
-            String count4 = "";
-            DecimalFormat df = new DecimalFormat("###,###");
-            
-            String SQL = "select sum(AmountReceivable) as Count from invoice where client='" + this.getFlowKey() + "' ";
-            count1 = this.getDbUtil().getFieldValue(SQL, "Count");
-            
-            SQL = "select sum(receiveNtdAmount) as Count from receiptmanage where client = '" + this.getFlowKey() + "'";
-            count2 = this.getDbUtil().getFieldValue(SQL, "Count");
-            
-            String sql = "select sum(i.TotalWithHolding) as TotalWithHolding from "
-            		+ "(select ROUND(" + DB.SQL_IFNULL + "(ids.TWHAmount,0), 0) as TotalWithHolding " +
-            		"from Invoice i " +
-            		"left join ( " +
-            		"select id.parentid,sum(id.Tax2) as TWHAmount from invoicedetail id " +
-            		"where id.WithHolding='Y' group by id.parentid ) as ids on i.FlowKey= ids.parentid " +
-            		"where i.client ='" + this.getFlowKey() + "') i";
-            count4 = this.getDbUtil().getFieldValue(sql, "TotalWithHolding");
-            
-            double requestPayAmount = 0;
-            if(count1 != null && count1.trim().length()> 0){
-            	requestPayAmount = Double.parseDouble(count1);
-            	count1 = df.format(Double.parseDouble(count1))+"";
-            }else{
-            	count1 = "0";
-            }
-            double receiveNtdAmount = 0;
-            if(count2 != null && count2.trim().length() >0){
-            	receiveNtdAmount = Double.parseDouble(count2);
-            	count2 = df.format(Double.parseDouble(count2))+"";
-            }else{
-            	count2 = "0";
-            }
-            double TotalWithHolding = 0;
-            if(count4 != null && count4.trim().length() >0){
-            	TotalWithHolding = Double.parseDouble(count4);
-            	count4 = df.format(Double.parseDouble(count4))+"";
-            }else{
-            	count4 = "0";
-            }
-            count3 =  df.format((int)(requestPayAmount - receiveNtdAmount - TotalWithHolding)) + "";
-            
-            /*
-             * 2013/1/6
-             * 修正計算公式為："已請款台幣總金額  - 已收款台幣總金額 - 他方扣繳台幣總額(資料來源：Invoice.TotalWithHolding)  = 未收款台幣總金額 ”
-             */
-        	rtnString +="<div id='tabs-6'>";
-            rtnString +="<div class='indent'>";
-            rtnString +="<table width=95% border=0><tr><td valign=top>";
-            rtnString +="<tr>";
-            rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.RequestPayNtdAmount") + " : " + count1 + "</td>";
-            rtnString +="<td align='center'>-</td>";
-            rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.ReceiveNtdAmount") + " : " +  count2 + "</td>";
-            rtnString +="<td align='center'>-</td>";
-            rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.TotalWithHolding") + " : " +  count4 + "</td>";
-            rtnString +="<td align='center'>=</td>";
-            rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.NotYetReceiveNtdAmount") + " : " +  count3 + "</td>";
-            rtnString +="</tr>";
-            rtnString +="<tr><td valign=top colspan='7'>";
-            rtnString +="<div id='updateNotYetWriteOffInvoiceDiv' name='updateNotYetWriteOffInvoiceDiv'></div>";
-            rtnString +="<div id='NotYetWriteOffInvoiceDiv' name='NotYetWriteOffInvoiceDiv'>";
+            if(canShowTabs6) {
+            	/**** tabs-6 ****/
+            	//count1 是“已請款台幣總金額”
+            	//count2 是“已收款台幣總金額”
+            	//count4 是“他方扣繳台幣總額”
+            	//count1 - count2 -count 4 = count3 是 “已請款台幣總金額” - “已收款台幣總金額”- 他方扣繳台幣總額(資料來源：Invoice.TotalWithHolding)  = “未收款台幣總金額”
+            	String count1 = "";
+            	String count2 = "";
+            	String count3 = "";
+            	String count4 = "";
+            	DecimalFormat df = new DecimalFormat("###,###");
+            	
+            	String SQL = "select sum(AmountReceivable) as Count from invoice where client='" + this.getFlowKey() + "' ";
+            	count1 = this.getDbUtil().getFieldValue(SQL, "Count");
+            	
+            	SQL = "select sum(receiveNtdAmount) as Count from receiptmanage where client = '" + this.getFlowKey() + "'";
+            	count2 = this.getDbUtil().getFieldValue(SQL, "Count");
+            	
+            	String sql = "select sum(i.TotalWithHolding) as TotalWithHolding from "
+            			+ "(select ROUND(" + DB.SQL_IFNULL + "(ids.TWHAmount,0), 0) as TotalWithHolding " +
+            			"from Invoice i " +
+            			"left join ( " +
+            			"select id.parentid,sum(id.Tax2) as TWHAmount from invoicedetail id " +
+            			"where id.WithHolding='Y' group by id.parentid ) as ids on i.FlowKey= ids.parentid " +
+            			"where i.client ='" + this.getFlowKey() + "') i";
+            	count4 = this.getDbUtil().getFieldValue(sql, "TotalWithHolding");
+            	
+            	double requestPayAmount = 0;
+            	if(count1 != null && count1.trim().length()> 0){
+            		requestPayAmount = Double.parseDouble(count1);
+            		count1 = df.format(Double.parseDouble(count1))+"";
+            	}else{
+            		count1 = "0";
+            	}
+            	double receiveNtdAmount = 0;
+            	if(count2 != null && count2.trim().length() >0){
+            		receiveNtdAmount = Double.parseDouble(count2);
+            		count2 = df.format(Double.parseDouble(count2))+"";
+            	}else{
+            		count2 = "0";
+            	}
+            	double TotalWithHolding = 0;
+            	if(count4 != null && count4.trim().length() >0){
+            		TotalWithHolding = Double.parseDouble(count4);
+            		count4 = df.format(Double.parseDouble(count4))+"";
+            	}else{
+            		count4 = "0";
+            	}
+            	count3 =  df.format((int)(requestPayAmount - receiveNtdAmount - TotalWithHolding)) + "";
+            	
+            	/*
+            	 * 2013/1/6
+            	 * 修正計算公式為："已請款台幣總金額  - 已收款台幣總金額 - 他方扣繳台幣總額(資料來源：Invoice.TotalWithHolding)  = 未收款台幣總金額 ”
+            	 */
+            	rtnString +="<div id='tabs-6'>";
+            	rtnString +="<div class='indent'>";
+            	rtnString +="<table width=95% border=0><tr><td valign=top>";
+            	rtnString +="<tr>";
+            	rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.RequestPayNtdAmount") + " : " + count1 + "</td>";
+            	rtnString +="<td align='center'>-</td>";
+            	rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.ReceiveNtdAmount") + " : " +  count2 + "</td>";
+            	rtnString +="<td align='center'>-</td>";
+            	rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.TotalWithHolding") + " : " +  count4 + "</td>";
+            	rtnString +="<td align='center'>=</td>";
+            	rtnString +="<td align='center'>" + this.getUserInfo().getMsg("jsp.Client.NotYetReceiveNtdAmount") + " : " +  count3 + "</td>";
+            	rtnString +="</tr>";
+            	rtnString +="<tr><td valign=top colspan='7'>";
+            	rtnString +="<div id='updateNotYetWriteOffInvoiceDiv' name='updateNotYetWriteOffInvoiceDiv'></div>";
+            	rtnString +="<div id='NotYetWriteOffInvoiceDiv' name='NotYetWriteOffInvoiceDiv'>";
 //            rtnString += printNotYetWriteOffInvoiceTableHtml();
-            
-            rtnString +="</div></td></tr></table>";
-            rtnString +="</div>";
-            rtnString +="</div>";
-            /**** tabs-6 end ****/
+            	
+            	rtnString +="</div></td></tr></table>";
+            	rtnString +="</div>";
+            	rtnString +="</div>";
+            	/**** tabs-6 end ****/
+            }
             
 
 //            sql = "select flowkey from Quotation where client = '" + this.getFlowKey() + "' and BasicQuotation = 'Y' order by QuotationDate desc";
